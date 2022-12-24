@@ -8,10 +8,7 @@ For fairness, the zombie is restricted to move around 30% of the time.
 
 Sample screenshots from the R (Terminal Version) of the game:
 ![image](https://user-images.githubusercontent.com/112973674/209449640-7447d1d5-b460-4b13-be50-c48fda0ab179.png)
+
 ![image](https://user-images.githubusercontent.com/112973674/209449648-c4790936-c6f9-4bd2-9b34-5ff2b9a3a7b4.png)
+
 ![image](https://user-images.githubusercontent.com/112973674/209449653-6c1c5df1-931b-425e-857d-3e29c170df0e.png)
-![image](https://user-images.githubusercontent.com/112973674/209449656-bd5e1d19-a3b1-47a5-8b62-d4f90844265d.png)
-![image](https://user-images.githubusercontent.com/112973674/209449664-e288ff17-502a-4500-8e17-01bc2f5e8cfa.png)
-![image](https://user-images.githubusercontent.com/112973674/209449670-15005a66-76f4-457b-9cc3-2f6771a7cc35.png)
-![image](https://user-images.githubusercontent.com/112973674/209449677-d304d7d3-c7f8-4d23-adf3-2a186737f7d4.png)
-![image](https://user-images.githubusercontent.com/112973674/209449682-fd790e9e-e461-467b-8fd2-c7cc1c443291.png)
