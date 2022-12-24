@@ -52,7 +52,7 @@ castle_create = function(){
   
   
   #AS stands for above staircase; variable is used as a filler space to keep the cell corresponding to the the above 'DS' object occupied
-  castle_dataframe[(nrow(castle_dataframe) + 1):(nrow(castle_dataframe) + nrow(which(castle == 'AS', arr.ind = T))),] = NA
+  castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows + nrow(which(castle == 'AS', arr.ind = T))),] = NA
   castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows <- nrow(castle_dataframe)),1:5] = data.frame(which(castle=='AS', arr.ind = T), 
                                                                                                                    rep('AS',nrow(which(castle=='AS', arr.ind = T))),
                                                                                                                    rep(0,nrow(which(castle=='AS', arr.ind = T))))
@@ -66,7 +66,7 @@ castle_create = function(){
   castle[,,castle_z_length][sample(which(castle[,,castle_z_length]=='1'),1)] = '\U2395'
   
   #Coordinates of the exit added to dataframe
-  castle_dataframe[(nrow(castle_dataframe) + 1):(castle_dataframe_rows <- nrow(castle_dataframe) + 1),1:5] = data.frame(which(castle=='\U2395', arr.ind = T), '\U2395', rep(-1,1))
+  castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows <- nrow(castle_dataframe) + 1),1:5] = data.frame(which(castle=='\U2395', arr.ind = T), '\U2395', rep(-1,1))
   
   
   #Spawning monster objects at any location that contains '1'
@@ -86,7 +86,7 @@ castle_create = function(){
   }
   
   #Adding information to dataframe
-  castle_dataframe[(nrow(castle_dataframe) + 1):(nrow(castle_dataframe) + nrow(which(castle == '\U1F479', arr.ind = T))),] = NA
+  castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows + nrow(which(castle == '\U1F479', arr.ind = T))),] = NA
   castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows <- nrow(castle_dataframe)),1:4] = data.frame(which(castle == '\U1F479', arr.ind = T), rep('\U1F479', nrow(which(castle =='\U1F479', arr.ind = T))))
   
   #Adding hp for each each monster to dataframe
@@ -100,11 +100,11 @@ castle_create = function(){
   }
   
   #Adding fairy and genie coordinate information to the dataframe
-  castle_dataframe[nrow(castle_dataframe) + nrow(which(castle == '\U1F9DA', arr.ind = T)),] = NA
+  castle_dataframe[(castle_dataframe_rows + nrow(which(castle == '\U1F9DA', arr.ind = T))),] = NA
   castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows <- nrow(castle_dataframe)),1:5] = data.frame(which(castle == '\U1F9DA', arr.ind = T), rep('\U1F9DA', nrow(which(castle =='\U1F9DA', arr.ind = T))),
                                                                                                                    rep(1,nrow(which(castle=='\U1F9DA', arr.ind = T))))
   
-  castle_dataframe[nrow(castle_dataframe) + nrow(which(castle == '\U1F9DE', arr.ind = T)),] = NA
+  castle_dataframe[(castle_dataframe_rows  + nrow(which(castle == '\U1F9DE', arr.ind = T))),] = NA
   castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows <- nrow(castle_dataframe)),1:5] = data.frame(which(castle == '\U1F9DE', arr.ind = T), rep('\U1F9DE', nrow(which(castle =='\U1F9DE', arr.ind = T))),
                                                                                                                    rep(1,nrow(which(castle=='\U1F9DE', arr.ind = T))))
   
@@ -117,3 +117,4 @@ castle_create = function(){
   castle_and_dataframe = list('castle' = castle, 'dataframe' = castle_dataframe)
   return(castle_and_dataframe)
 }
+
