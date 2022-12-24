@@ -111,7 +111,7 @@ monster_event = function(castle_data,player){
 #Function to move to the next floor
 move_to_next_floor_event = function(castle_data, player, zombie){
   cat(rep("\n", 50))
-  print('You found the stars!', quote = F)
+  print('You found the stairs!', quote = F)
   print(paste('You can now advance to floor', player$floor + 1,'!'), quote = F)
   #Add 1 to player's current z-position
   player$floor = player$floor + 1
