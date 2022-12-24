@@ -63,7 +63,7 @@ zombie_class = setRefClass('zombie_info', fields = list(movement_dict = 'list',
                                for(row in 1:nrow(movable_spaces)){
                                  c_squared = c(c_squared,euclidean_distance(movable_spaces[row,],player$coordinate[1:2]))
                                }
-                               coord = movable_spaces[which(c_squared == max(c_squared)),]
+                               coord = movable_spaces[which(c_squared == max(c_squared))[1],]
                                #Erase old zombie location
                                castle_data$castle[which(castle_data$castle=='\U1F9DF', arr.ind = T)] = '\u2800'
                                #Add new zombie location and update initial coordinate,current coordinate, and distance
