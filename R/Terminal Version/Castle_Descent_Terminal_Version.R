@@ -2,9 +2,9 @@
 #Objective is to get to the bottom of the castle and find the exit while avoiding the zombie
 #Keypress only works in the commandline/terminal. It allows you to input a key without having to  press enter
 library(keypress)  
-source('~/Terminal Version/Castle_Create.R')
-source('~/Terminal Version/Events.R')
-source('~/Terminal Version/Classes.R')
+source('Castle_Create.R')
+source('Events.R')
+source('Classes.R')
 #The dot hides variable from global environment
 #Variable used to determine if the player is greeted with the 
 #welcome screen or not
