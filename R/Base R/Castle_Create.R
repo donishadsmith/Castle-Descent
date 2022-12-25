@@ -66,8 +66,9 @@ castle_create = function(){
   castle[,,castle_z_length][sample(which(castle[,,castle_z_length]=='1'),1)] = '\U2395'
   
   #Coordinates of the exit added to dataframe
+  castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows + nrow(which(castle=='\U2395', arr.ind = T))),] = NA
   castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows <- nrow(castle_dataframe)),1:5] = data.frame(which(castle=='\U2395', arr.ind = T), '\U2395', rep(-1,1))
-
+  
   
   #Spawning monster objects at any location that contains '1'
   castle[,,1:castle_z_length][which(castle == '1')] = '\U1F479'
