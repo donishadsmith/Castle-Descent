@@ -1,8 +1,8 @@
 #Script to play the actual game
 #Objective is to get to the bottom of the castle and find the exit while avoiding the zombie
-source('~/Base R/Castle_Create.R')
-source('~/Base R/Events.R')
-source('~/Base R/Classes.R')
+source('Castle_Create.R')
+source('Events.R')
+source('Classes.R')
 #The dot hides variable from global environment
 #Variable used to determine if the player is greeted with the 
 #welcome screen or not
