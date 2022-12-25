@@ -113,6 +113,7 @@ castle_descent = function(){
         else{
           print('There is nothing behind this door.', quote = F)
         }
+        print(paste('Floor',player$floor, 'of',length(castle_data$castle)/(nrow(castle_data$castle)*ncol(castle_data$castle))), quote = F)
         print(castle_data$castle[,,player$floor], quote = F)
         Sys.sleep(2)
         
