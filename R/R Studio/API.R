@@ -42,7 +42,7 @@ read_console_player_monster_action= function() {
     
     if (player_action %in% c('attack','a','r','run')) {
       rstudioapi::sendToConsole("", execute = F)
-      return(noquote(""))
+      return(player_action)
     }
     
     rstudioapi::sendToConsole("", execute = F)
