@@ -84,7 +84,7 @@ monster_event = function(castle_data,player){
 #Function for monster combat
 monster_combat_event = function(castle_data,player,monster_hp){
   cat(rep("\n", 50))
-  print(paste('Floor',player$floor, 'of',length(castle_data$castle)/(nrow(castle_data$castle)*ncol(castle_data$castle))), quote = F)
+  print(paste('Floor',player$floor, 'of',player$total_floors), quote = F)
   print(castle_data$castle[,,player$floor], quote = F)
   print('You decided to attack',quote = F)
   player$attack_power = sample( player$attack_range,1)
