@@ -61,7 +61,7 @@ monster_event = function(castle_data,player){
   player_action = 'a'
   #While loop so that player can engage with monster unless they decide to run, they faint, or they win
   while(!(player_action %in% c('r','run') | monster_hp == 0 | player$hp == 0)){
-    read_console_player_monster_action()
+    player_action = read_console_player_monster_action()
     if(player_action == 'attack' | player_action == 'a'){
       event_output = monster_combat_event(castle_data,player,monster_hp)
       castle_data = event_output[1:3]
