@@ -120,5 +120,3 @@ monster_combat_event = function(castle_data,player,monster_hp){
   monster_combat_event_output = c(castle_data,player)
   return(monster_combat_event_output)
 }
-
-
