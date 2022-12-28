@@ -49,3 +49,4 @@ read_console_player_monster_action= function() {
     Sys.sleep(0.2)
   }
 }
+
