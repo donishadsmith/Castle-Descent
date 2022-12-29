@@ -149,8 +149,10 @@ castle_descent = function(){
                castle_data = player$move_to_new_floor_event(castle_data = castle_data)
                event_output = zombie$move_to_new_floor_event(castle_data = castle_data, player = player)},
              '\U2395' = {
-               castle_data = player$move_to_new_floor_event(castle_data = castle_data)
-               event_output = zombie$move_to_new_floor_event(castle_data = castle_data, player = player)},
+               if(player$floor < player$total_floors){
+                 castle_data = player$move_to_new_floor_event(castle_data = castle_data)
+                 event_output = zombie$move_to_new_floor_event(castle_data = castle_data, player = player)
+               }},
              'AS' = {
                cat(rep("\n", 50))
                print('You already came from upstairs.', quote = F)
