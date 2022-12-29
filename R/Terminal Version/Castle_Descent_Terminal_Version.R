@@ -72,7 +72,7 @@ castle_descent = function(){
     switch (object[[1]],
               'DS' = {print('The location of the stairs has been revealed!', quote = F)},
               '\U2395' = {print('The location of the exit has been revealed!', quote = F)},
-              print(paste(player$monster_threshold, 'required to defeat to reveal the next floor.'), quote = F)
+              print(paste(player$monster_threshold, 'required to defeat to reveal the door.'), quote = F)
       )
     
       
