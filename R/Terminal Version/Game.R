@@ -100,7 +100,7 @@ castle_descent = function(){
           player$movement_coordinate[dimension] = max - 1
         }
         else{
-          player$movement_coordinate[dimension] = max - (max -1)
+          player$movement_coordinate[dimension] = max %% max + 1
         }
       }
     }
