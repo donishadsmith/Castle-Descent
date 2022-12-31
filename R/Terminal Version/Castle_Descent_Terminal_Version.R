@@ -25,6 +25,9 @@ castle_descent = function(){
                         total_floors = length(castle_data$castle[1,1,]),
                         encountered_object = ' ',
                         max_velocity = 0,
+                        acceleration = 0,
+                        previous_velocity = 0,
+                        previous_game_update_time = 0,
                         monster_threshold = round(length(which(castle_data$dataframe['z'] == 1 & castle_data$dataframe['object']=='\U1F479'))*0.60,0))
   
   zombie = zombie_class(current_coordinate = which(castle_data$castle=='\U1F9DF', arr.ind = T),
@@ -56,7 +59,6 @@ castle_descent = function(){
     
     cat(rep("\n", 50))
     print(paste('Floor', player$floor, 'of',player$total_floors), quote = F)
-    
     #If player kills a certain number of monsters, the stairs or exit is revealed
     object = ''
     if(player$monster_threshold == 0){
@@ -78,16 +80,16 @@ castle_descent = function(){
       
     #player directional inputs
     print('w (up), a (left), s (down), d (right): ', quote = F)
+    #Get time before the game updates
+    player$stimulus_time = as.numeric(Sys.time())
     player_action = tolower(keypress(block = T)) 
     while(!(player_action %in% c('w','a','s','d'))){
       player_action = tolower(keypress(block = T))
       }
-    #Get time before the game updates
-    player$before_game_update_time = as.numeric(Sys.time())
+    
     #Get the movement coordinate which is the sum of the player coordinate and the vector in the movement dictionary
     #corresponding to the valid player action
     player$movement_coordinate = player$current_coordinate + player$movement_dict[[player_action]]
-    
     #Allow player to appear on the opposite end of the grid if the coordinate is out of bounds
     if(length(dimension <- which(player$movement_coordinate[1:2] %in% c(0,castle_data$castle_length + 1))) > 0){
       min = 0
@@ -102,6 +104,10 @@ castle_descent = function(){
         }
       }
     }
+    #Get changed dimension
+    player$coordinate_difference = (player$movement_coordinate - player$current_coordinate)[1:2]
+    player$changed_dimension = which(player$coordinate_difference != 0)
+    player$coordinate_difference  = player$coordinate_difference[player$changed_dimension]
     #Get the encountered object, depending on whether the object is an empty space, or zombie, or needs a dataframe search
     player$encountered_object = castle_data$castle[player$movement_coordinate]
     if(player$encountered_object %in% c('\U1F6AA','\U2395')){
@@ -110,7 +116,7 @@ castle_descent = function(){
       if(number > 0){
         player$encountered_object = castle_data$dataframe[player$castle_dataframe_row,'object']
       }
-      }
+    }
     #Update player and zombie location if encountered object is an empty space or zombie
     if(player$encountered_object %in% c(' ','\U1F9DF','\U1F6AA')){
       #Make previous player coordinate empty
@@ -126,13 +132,13 @@ castle_descent = function(){
         #Update coordinate
         player$current_coordinate = player$movement_coordinate
         #Get epoch time after object movement and get velocity
-        player$after_game_update_time = as.numeric(Sys.time())
+        player$current_game_update_time = as.numeric(Sys.time())
         player$calculate_player_velocity()
         #Zombie event
         event_output = zombie$pathfinding(castle_data = castle_data, player = player)
         castle_data = event_output[1:3]
         player = event_output[[4]]
-        }
+      }
       else if(player$encountered_object == '\U1F9DF'){
         # Add emoji to new coordinate is the object is empty
         castle_data$castle[player$current_coordinate] = ' '
@@ -152,7 +158,7 @@ castle_descent = function(){
                castle_data = player$move_to_new_floor_event(castle_data = castle_data)
                event_output = zombie$move_to_new_floor_event(castle_data = castle_data, player = player)},
              '\U2395' = {
-               if(player$floor < player$total_floors){
+               if (player$floor < player$total_floors){
                  castle_data = player$move_to_new_floor_event(castle_data = castle_data)
                  event_output = zombie$move_to_new_floor_event(castle_data = castle_data, player = player)
                }},
