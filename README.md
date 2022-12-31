@@ -6,9 +6,8 @@ The zombie will always be spawned on the grid that is the maximum Euclidean dist
 Additionally, the zombie uses pathfinding to minimize the distance to the player and can move in 8 directions while the player can only move in 4 directions.
 For fairness, the zombie is restricted to move around 30% of the time. The objects in this game are unicode.
 
-Sample screenshots from the R (Terminal Version) of the game:
-![image](https://user-images.githubusercontent.com/112973674/209449640-7447d1d5-b460-4b13-be50-c48fda0ab179.png)
-
-![image](https://user-images.githubusercontent.com/112973674/209449648-c4790936-c6f9-4bd2-9b34-5ff2b9a3a7b4.png)
-
-![image](https://user-images.githubusercontent.com/112973674/209449653-6c1c5df1-931b-425e-857d-3e29c170df0e.png)
+<img width="359" alt="Screenshot 2022-12-30 at 9 44 43 PM" src="https://user-images.githubusercontent.com/112973674/210123631-116494ff-1dac-4ffc-8392-3899828cf9a3.png">
+<img width="358" alt="Screenshot 2022-12-30 at 9 46 11 PM" src="https://user-images.githubusercontent.com/112973674/210123633-e351506f-eae0-4d1c-91de-d07c9893e7cf.png">
+<img width="363" alt="Screenshot 2022-12-30 at 9 47 46 PM" src="https://user-images.githubusercontent.com/112973674/210123634-2694e344-31cc-4502-867c-b9cd8f7cc681.png">
+<img width="354" alt="Screenshot 2022-12-30 at 9 51 10 PM" src="https://user-images.githubusercontent.com/112973674/210123635-d910655d-e18b-4145-990d-679aebeef852.png">
+<img width="356" alt="Screenshot 2022-12-30 at 9 49 47 PM" src="https://user-images.githubusercontent.com/112973674/210123636-8bad58b8-6e32-4048-960b-47ce4db33526.png">
