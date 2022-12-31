@@ -1,5 +1,5 @@
 # Castle-Descent
-Repository for a R/Python text-based adventure game that I created.
+Repository for a R/Python Unicode text-based adventure game that I created.
 
 The objective is to descend to the bottom of a randomly generated castle (represented as a 3D Array) while avoiding a zombie. The doors may contain a genie, which increases your attack range, a fairy that heals you, a monster, or the staircase/exit to the next level. Defeating 60% of the monsters on each level will reveal the stairs/exit. 
 
