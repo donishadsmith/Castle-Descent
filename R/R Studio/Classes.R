@@ -92,6 +92,7 @@ zombie_class = setRefClass('zombie_info', fields = list(movement_dict = 'list',
 #Player class keeps importint information about player such as health and current posisiton
 player_class =  setRefClass('player_info', fields = list(hp ='numeric', current_coordinate='matrix',
                                                          movement_dict = 'list',
+                                                         inventory = 'list',
                                                          encountered_object='character',
                                                          movement_coordinate = 'matrix',
                                                          attack_range='numeric', 
@@ -101,6 +102,7 @@ player_class =  setRefClass('player_info', fields = list(hp ='numeric', current_
                                                          #Adding incentive to kill monsters. If player kills a certain number of monsters.
                                                          #Stairs/exit is revealed
                                                          monster_threshold = 'numeric',
+                                                         zombie_halt = 'numeric',
                                                          total_floors = 'numeric',
                                                          max_velocity = 'numeric',
                                                          stimulus_time = 'numeric',
@@ -128,6 +130,8 @@ player_class =  setRefClass('player_info', fields = list(hp ='numeric', current_
                                 print(paste('You can now advance to floor', floor + 1,'!'), quote = F)
                                 print(paste('Floor', floor, 'of',total_floors), quote = F)
                                 print(castle_data$castle[,,floor], quote = F)
+                                #Erase player
+                                castle_data$castle[current_coordinate] = ' '
                                 #Add 1 to player's current z-position
                                 floor <<- floor + 1
                                 #Reset the monster threshold

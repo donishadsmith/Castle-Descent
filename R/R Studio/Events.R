@@ -121,4 +121,57 @@ monster_combat_event = function(castle_data,player,monster_hp){
   return(monster_combat_event_output)
 }
 
+upstairs_event = function(castle_data, player){
+  cat(rep("\n", 50))
+  print('You already came from upstairs.', quote = F)
+  print(paste('Floor',player$floor, 'of',player$total_floors), quote = F)
+  print(castle_data$castle[,,player$floor], quote = F)
+  upstairs_event_output = c(castle_data,player)
+  Sys.sleep(1)
+  return(upstairs_event_output)
+}
 
+inventory_event = function(castle_data, player,player_action){
+  if(!(player_action == 'i')){
+    cat(rep("\n", 50))
+    print('You found a crystal ball! The crystal ball is in your inventory.')
+    castle_data$castle[player$movement_coordinate] = player$encountered_object
+    print(paste('Floor',player$floor, 'of',player$total_floors), quote = F)
+    print(castle_data$castle[,,player$floor], quote = F)
+    player$inventory[[1]] = player$inventory[[1]] + 1
+    print(player$inventory)
+    #Adding back door and a zero in dataframe
+    castle_data$castle[player$movement_coordinate] = '\U1F6AA'
+    castle_data$dataframe[player$castle_dataframe_row,5] = 0
+    Sys.sleep(2)
+  }
+  else{
+    if(player$inventory[[1]] == 0){
+      print(player$inventory)
+      print('You have nothing in your inventory.', quote = F)
+    }
+    else{
+      cat(rep("\n", 50))
+      print(paste('Floor',player$floor, 'of',player$total_floors), quote = F)
+      print(castle_data$castle[,,player$floor], quote = F)
+      print(player$inventory)
+      if(player$inventory[[1]] == 1){
+        print(paste('You have',player$inventory[[1]], 'crystal ball in your inventory.'),quote = F)
+      }
+      else{
+        print(paste('You have',player$inventory[[1]], 'crystal balls in your inventory.'),quote = F)
+      }
+      player_action = read_console_player_inventory_action()
+      
+      if(player_action == 's'){
+        player$zombie_halt = sample(10:20,1)
+        print(paste('Zombie halted for',player$zombie_halt,'steps.'), quote = F)
+        player$inventory[[1]] = player$inventory[[1]] - 1
+      }
+      
+    }
+  }
+  crystal_ball_event_output = c(castle_data,player)
+  Sys.sleep(1)
+  return(crystal_ball_event_output)
+  }

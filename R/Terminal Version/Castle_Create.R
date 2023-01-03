@@ -69,9 +69,11 @@ castle_create = function(){
   #This allows each floor to have the same proportion of fairies, monsters, and genies
   #simply adding fairies and genies without respect to each floor may result in an imbalance.
   #the majority of fairies and genies may be randomly placed at the top floors, bottom floors, or specfic floors.
+  #New addition is the crystal ball
   for(floor in 1:max_floors){
     castle[,,floor][sample(which(castle[,,floor] == '\U1F479'),fairy_proportion)] = '\U1F9DA'
     castle[,,floor][sample(which(castle[,,floor] == '\U1F479'),genie_proportion)] = '\U1F9DE'
+    castle[,,floor][sample(which(castle[,,floor] == '\U1F479'),1)] = '\U1F52E'
   }
   
   #Adding information to dataframe
@@ -88,7 +90,7 @@ castle_create = function(){
     base_hp_vector = base_hp_vector + 10
   }
   
-  #Adding fairy and genie coordinate information to the dataframe
+  #Adding fairy,genie coordinate, and crystal ball  information to the dataframe
   castle_dataframe[(castle_dataframe_rows + nrow(which(castle == '\U1F9DA', arr.ind = T))),] = NA
   castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows <- nrow(castle_dataframe)),1:5] = data.frame(which(castle == '\U1F9DA', arr.ind = T), rep('\U1F9DA', nrow(which(castle =='\U1F9DA', arr.ind = T))),
                                                                                                                    rep(1,nrow(which(castle=='\U1F9DA', arr.ind = T))))
@@ -96,7 +98,9 @@ castle_create = function(){
   castle_dataframe[(castle_dataframe_rows  + nrow(which(castle == '\U1F9DE', arr.ind = T))),] = NA
   castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows <- nrow(castle_dataframe)),1:5] = data.frame(which(castle == '\U1F9DE', arr.ind = T), rep('\U1F9DE', nrow(which(castle =='\U1F9DE', arr.ind = T))),
                                                                                                                    rep(1,nrow(which(castle=='\U1F9DE', arr.ind = T))))
-  
+  castle_dataframe[(castle_dataframe_rows  + nrow(which(castle == '\U1F52E', arr.ind = T))),] = NA
+  castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows <- nrow(castle_dataframe)),1:5] = data.frame(which(castle == '\U1F52E', arr.ind = T), rep('\U1F52E', nrow(which(castle =='\U1F52E', arr.ind = T))),
+                                                                                                                   rep(1,nrow(which(castle=='\U1F52E', arr.ind = T))))
   #Spawning doors at coordinates that are objects
   for(coordinate in 1:nrow(castle_dataframe)){
     x = unlist(castle_dataframe[coordinate,1:3])

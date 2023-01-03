@@ -2,15 +2,16 @@
 #Use RStudio's API to dynamically read R's Terminal
 read_console_try_again_action = function(){
   print('Want to play again? Yes (y) or No (n)?', quote = F)
+  #Loop will continue until player inputs valid response
   while (rstudioapi::isAvailable()) {
-    player_retry <<- tolower(rstudioapi::getConsoleEditorContext()$contents)
-    if(player_retry %in% c('yes','y')){
+    player_action <<- tolower(rstudioapi::getConsoleEditorContext()$contents)
+    if( player_action %in% c('yes','y')){
+      #Needed to clear console
       rstudioapi::sendToConsole("", execute = F)
       castle_descent()
     }
-    else if (player_retry %in% c('no','n')){
+    else if ( player_action %in% c('no','n')){
       print("Thank you for playing Castle Descent!", quote = F)
-      rstudioapi::sendToConsole("", execute = F)
       return(noquote(""))
     }
     #Needed so that player can escape game by pressing ctrl + c.
@@ -22,11 +23,11 @@ read_console_try_again_action = function(){
 
 
 read_console_player_movement_action = function() {
-  print('w (up), a (left), s (down), or, d (right). You can quit by pressing ctrl + c.', quote = F)
+  print('w (up), a (left), s (down), or, d (right), or check inventory(i)', quote = F)
   while (rstudioapi::isAvailable()) {
     player_action <<- tolower(rstudioapi::getConsoleEditorContext()$contents)
     
-    if (player_action %in% c('w','a','s','d')) {
+    if (player_action %in% c('w','a','s','d', 'i')) {
       rstudioapi::sendToConsole("", execute = F)
       return(noquote(""))
     }
@@ -36,11 +37,26 @@ read_console_player_movement_action = function() {
 }
 
 read_console_player_monster_action= function() {
-  print('attack(a) or run(r). You can quit by pressing ctrl + c', quote = F)
+  print('attack(a) or run(r)', quote = F)
   while (rstudioapi::isAvailable()) {
     player_action <<- tolower(rstudioapi::getConsoleEditorContext()$contents)
     
-    if (player_action %in% c('attack','a','r','run')) {
+    if (player_action %in% c('attack','a','r','run', 'i')) {
+      rstudioapi::sendToConsole("", execute = F)
+      return(player_action)
+    }
+    
+    rstudioapi::sendToConsole("", execute = F)
+    Sys.sleep(0.2)
+  }
+}
+
+read_console_player_inventory_action= function() {
+  print('Temporarily halt zombie movement(s) or leave your inventory (l).', quote = F)
+  while (rstudioapi::isAvailable()) {
+    player_action <<- tolower(rstudioapi::getConsoleEditorContext()$contents)
+    
+    if (player_action %in% c('s','l')) {
       rstudioapi::sendToConsole("", execute = F)
       return(player_action)
     }
