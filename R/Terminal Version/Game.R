@@ -134,12 +134,11 @@ castle_descent = function(){
     }
     #Update player and zombie location if encountered object is an empty space or zombie
     if(player$encountered_object %in% c(' ','\U1F9DF','\U1F6AA')){
-      #Make previous player coordinate empty
+      #Clear current coordinate if it contains player
+      if(castle_data$castle[player$current_coordinate] == '\U1F93A'){
+        castle_data$castle[player$current_coordinate] = ' '
+      }
       if(player$encountered_object %in% c(' ','\U1F6AA')){
-        #Clear current coordinate
-        if(castle_data$castle[player$current_coordinate] == '\U1F93A'){
-          castle_data$castle[player$current_coordinate] = ' '
-        }
         #Add emoji
         if(player$encountered_object == ' '){
           castle_data$castle[player$movement_coordinate] = '\U1F93A'
@@ -160,9 +159,6 @@ castle_descent = function(){
         }
       }
       else if(player$encountered_object == '\U1F9DF'){
-        # Add emoji to new coordinate is the object is empty
-        castle_data$castle[player$current_coordinate] = ' '
-        #Make previous player coordinate empty
         player$current_coordinate = player$movement_coordinate
         zombie$distance_to_player = 0
       }
