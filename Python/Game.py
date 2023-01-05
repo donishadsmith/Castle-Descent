@@ -37,7 +37,7 @@ def castle_descent():
                           acceleration = 0,
                           total_monsters =  [floor[0] for floor in [(key[0],object[0]) for key,object in castle_info.items() if object[0] == u'\U0001f479']])
     #Calculate the number of monsters needed to be defeated
-    player.monster_threshold = int(len([floor for floor in player.total_monsters if floor == 0])*0.60)
+    player.monster_threshold = int(len([floor for floor in player.total_monsters if floor == player.floor])*0.60)
     #Get zombie coordinate
     zombie = zombie_class(current_coordinate = list(zip(*np.where(castle == u'\U0001F9DF')))[0],
                         controller = zombie_movement)
