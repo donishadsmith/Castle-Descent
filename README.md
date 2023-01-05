@@ -1,5 +1,5 @@
 # Castle-Descent
-Repository for a R/Python Unicode text-based/rouguelike  game that I created.
+Repository for a R/Python Unicode text-based/rouguelike game that I created. This project is ongoing and new features will be added in the future when I have time. 
 
 Note: Both versions are playable, I am working on refining and debugging code. I'm also working on a better way to display the python array. The R folder contains three sepearte versions of the same game. The "Base R" can be used with base terminal/console R, no additional packages are needed. The "Terminal Version" needs the keypress package, which prevents the player from having to press enter after each input. The "R Studio" version uses R Studio's Application Program Interface (API) to get the player's input without having to press enter. To run the Base and terminal versions of the R version, go to the folder and type 'Rscript Game.R' in the Terminal, if you have R installed. I also tried to match the R and Python code as best as I can, mostly to make it easier to change things in both languages if I need to since the structure is the same.
 
