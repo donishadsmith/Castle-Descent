@@ -15,7 +15,7 @@ Additionally, the zombie uses pathfinding, to minimize the distance to the playe
 <img width="363" alt="Screenshot 2022-12-30 at 9 47 46 PM" src="https://user-images.githubusercontent.com/112973674/210123652-c1020690-b7ea-4c31-b400-7dcac0211afb.png">
 <img width="359" alt="Screenshot 2022-12-30 at 9 44 43 PM" src="https://user-images.githubusercontent.com/112973674/210123649-25cc557b-6634-4d24-acd3-8b67676b441f.png">
 
-Added new feature - crystal ball and inventory. Inventory contains any crystal ball the player finds and can be accessed during free movement. Crystal ball halts zombie movement for a random number of player steps (from 10 to 20).
+Added new feature - crystal ball and inventory. Inventory contains any crystal ball the player finds and can be accessed during free movement. Crystal ball halts zombie movement for a random number of player steps (from 10 to 20). Images from the "R Studio" version.
 
 <img width="496" alt="Screenshot 2023-01-02 at 8 33 46 PM" src="https://user-images.githubusercontent.com/112973674/210292209-612c4e52-c829-4204-ab38-a31734f8cd90.png">
 <img width="500" alt="Screenshot 2023-01-02 at 8 34 17 PM" src="https://user-images.githubusercontent.com/112973674/210292225-3dc0ad58-6310-4afd-88cc-9365e4c9bde2.png">
