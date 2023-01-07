@@ -161,7 +161,7 @@ def castle_descent():
                     castle = zombie.move_to_next_floor(castle,player)
                 case u'\u2395':
                     if player.floor < player.total_floors:
-                        castle = player.move_to_next_floor_event(castle,castle_info)
+                        castle = player.move_to_next_floor_event(castle)
                         castle = zombie.move_to_next_floor(castle,player)
                 case 'A':
                     upstairs_event(castle,player)
