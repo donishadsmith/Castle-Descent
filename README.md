@@ -9,11 +9,11 @@ The objective is to descend to the bottom of a randomly generated castle (repres
 The zombie will always be spawned on the grid that is the maximum Chebyshev distance from the player for each new floor.
 Additionally, the zombie uses pathfinding, to minimize the distance to the player predicted position or current position depending on its distance from the player (using Chebyshev distance). Predicted position is calculated using player's velocity and acceleration. The velocity calculation is displacement/(player's reaction time + game update time). This is done to create more interesting movement. The zombie can move in 8 directions while the player is restricted to 4 movements (north, west, east, south). You play mainly using the wasd keys. The array wraps around only for the player so that you can spawn on the opposite side of the array if you go out of bounds. You can also use the doors to hide from the zombie if they are empty. If you encounter a fairy or genie or defeat a monster, then you can use can freely move through those empty doors, which is something that the zombie cannot do. 
 
-<img width="354" alt="Screenshot 2022-12-30 at 9 51 10 PM" src="https://user-images.githubusercontent.com/112973674/210123653-0453060b-4986-4e50-9c35-4356fb41516a.png">
-<img width="356" alt="Screenshot 2022-12-30 at 9 49 47 PM" src="https://user-images.githubusercontent.com/112973674/210123650-a886a76a-521c-46bc-bfdc-ad5e0c4d4cc8.png">
-<img width="358" alt="Screenshot 2022-12-30 at 9 46 11 PM" src="https://user-images.githubusercontent.com/112973674/210123651-7c976a53-a25f-48bb-a64a-b1ae338de265.png">
-<img width="363" alt="Screenshot 2022-12-30 at 9 47 46 PM" src="https://user-images.githubusercontent.com/112973674/210123652-c1020690-b7ea-4c31-b400-7dcac0211afb.png">
-<img width="359" alt="Screenshot 2022-12-30 at 9 44 43 PM" src="https://user-images.githubusercontent.com/112973674/210123649-25cc557b-6634-4d24-acd3-8b67676b441f.png">
+<img width="354" alt="Screenshot 2023-01-07 at 2 27 05 AM" src="https://user-images.githubusercontent.com/112973674/211139376-80874eee-27ee-4718-bfcd-2cfda453f45c.png">
+<img width="357" alt="Screenshot 2023-01-07 at 2 26 32 AM" src="https://user-images.githubusercontent.com/112973674/211139377-45876a06-c237-4ae5-8119-0daa9c43b5af.png">
+<img width="350" alt="Screenshot 2023-01-07 at 2 26 44 AM" src="https://user-images.githubusercontent.com/112973674/211139378-9517cdfc-df45-49d0-a6fa-6bc7a3299f2e.png">
+<img width="351" alt="Screenshot 2023-01-07 at 2 26 58 AM" src="https://user-images.githubusercontent.com/112973674/211139380-6a1ddf93-900a-4187-a92a-c366800cb405.png">
+<img width="502" alt="Screenshot 2023-01-07 at 2 26 14 AM" src="https://user-images.githubusercontent.com/112973674/211139381-cae3ab08-dd66-400b-8168-cfb29f344ca3.png">
 
 Added new feature - inventory for 3 new items (available in the R version only for now). Currently working on adding this feature to the python version. The inventory matrix wraps around just like the castle array. So going out of bounds will spawn the cursor on the opposite side. 
 
