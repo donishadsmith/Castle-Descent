@@ -125,6 +125,37 @@ monster_combat_event = function(castle_data,player,monster_hp){
   return(monster_combat_event_output)
 }
 
+item_event = function(castle_data, player){
+  cat(rep("\n", 50))
+  switch(player$encountered_object,
+         '\U1F52E' = {
+           print('You found a crystal ball! The crystal ball is in your inventory.', quote = F)
+         },
+         '\U1F371' = {
+           print('You found a bento box! The bento box is in your inventory.', quote = F)
+         },
+         '\U0001f50e' = {
+           print('You found a magnifying glass! The magnifying glass is in your inventory.', quote = F)
+         }
+         
+  )
+  castle_data$castle[player$movement_coordinate] = player$encountered_object
+  print(paste('Floor',player$floor, 'of',player$total_floors), quote = F)
+  print(castle_data$castle[,,player$floor], quote = F)
+  player$hidden_inventory[[player$encountered_object]] = player$hidden_inventory[[player$encountered_object]] + 1
+  if(length(which(player$observable_inventory[1,] == player$encountered_object)) == 0){
+    player$observable_inventory[1,which(player$observable_inventory[1,] == '')[1]] = player$encountered_object
+  }
+  print(player$observable_inventory, quote = F)
+  #Adding back door and a zero in dataframe
+  castle_data$castle[player$movement_coordinate] = '\U1F6AA'
+  castle_data$dataframe[player$castle_dataframe_row,5] = 0
+  Sys.sleep(2)
+  item_event_output = c(castle_data,player)
+  return(item_event_output)
+}
+
+
 upstairs_event = function(castle_data, player){
   cat(rep("\n", 50))
   print('You already came from upstairs.', quote = F)
@@ -134,54 +165,3 @@ upstairs_event = function(castle_data, player){
   Sys.sleep(1)
   return(upstairs_event_output)
 }
-
-inventory_event = function(castle_data, player,player_action){
-  if(!(player_action == 'i')){
-    cat(rep("\n", 50))
-    print('You found a crystal ball! The crystal ball is in your inventory.')
-    castle_data$castle[player$movement_coordinate] = player$encountered_object
-    print(paste('Floor',player$floor, 'of',player$total_floors), quote = F)
-    print(castle_data$castle[,,player$floor], quote = F)
-    player$inventory[[1]] = player$inventory[[1]] + 1
-    print(player$inventory)
-    #Adding back door and a zero in dataframe
-    castle_data$castle[player$movement_coordinate] = '\U1F6AA'
-    castle_data$dataframe[player$castle_dataframe_row,5] = 0
-    Sys.sleep(2)
-  }
-  else{
-    if(player$inventory[[1]] == 0){
-      print(player$inventory)
-      print('You have nothing in your inventory.', quote = F)
-    }
-    else{
-      cat(rep("\n", 50))
-      print(paste('Floor',player$floor, 'of',player$total_floors), quote = F)
-      print(castle_data$castle[,,player$floor], quote = F)
-      print(player$inventory)
-      if(player$inventory[[1]] == 1){
-        print(paste('You have',player$inventory[[1]], 'crystal ball in your inventory.'),quote = F)
-      }
-      else{
-        print(paste('You have',player$inventory[[1]], 'crystal balls in your inventory.'),quote = F)
-      }
-      
-      print('Temporarily halt zombie movement(s) or leave your inventory (l): ', quote = F)
-      player_action = tolower(keypress(block = T)) 
-      while(!(player_action %in% c('s','l'))){
-        player_action = tolower(keypress(block = T))
-      }
-      
-      if(player_action == 's'){
-        player$zombie_halt = sample(10:20,1)
-        print(paste('Zombie halted for',player$zombie_halt,'steps.'), quote = F)
-        player$inventory[[1]] = player$inventory[[1]] - 1
-      }
-      
-    }
-  }
-  crystal_ball_event_output = c(castle_data,player)
-  Sys.sleep(1)
-  return(crystal_ball_event_output)
-}
-

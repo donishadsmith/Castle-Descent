@@ -1,7 +1,7 @@
 #Function to create castle and castle dataframe containing information about castle
 castle_create = function(){
   castle_dataframe = data.frame('x' = NA, 'y' = NA, 'z' = NA, 'object' = NA,
-                                'hp' = NA)
+                                'hp' = NA, 'item' = NA)
   # Area of the castle floor will equal castle_width* castle_length
   # x,y are odd numbers for aesthetic reasons; those reasons involve the distance of the objects from each other
   castle_length = sample(seq(9,13, 2),1)
@@ -23,7 +23,7 @@ castle_create = function(){
   #Create matrix of free spaces
   movable_spaces = which(castle[,,1]==' ', arr.ind = T)
   
-  #Spawn zombie at farthest location from Manhattan distance player 
+  #Spawn zombie at farthest location from Chebyshev distance player 
   max_coord = c()
   for(row in 1:nrow(movable_spaces)){
     max_coord = c(max_coord,max(abs(player_coord - movable_spaces[row,])))
@@ -39,15 +39,19 @@ castle_create = function(){
   
   #Unlike the = sign <- assignment operator allows you to declare variables within functions
   castle_dataframe[nrow(castle_dataframe):nrow(which(castle == 'DS', arr.ind = T)),] = NA
-  castle_dataframe[1:(castle_dataframe_rows <- nrow(castle_dataframe)),1:5] = data.frame(which(castle=='DS', arr.ind = T), 
+  castle_dataframe[1:(castle_dataframe_rows <- nrow(castle_dataframe)),1:6] = data.frame(which(castle=='DS', arr.ind = T), 
                                                                                          rep('DS',nrow(which(castle=='DS', arr.ind = T))),
-                                                                                         rep(1,nrow(which(castle=='DS', arr.ind = T))))
+                                                                                         rep(1,nrow(which(castle=='DS', arr.ind = T))),
+                                                                                         rep('no',nrow(which(castle=='DS', arr.ind = T)))
+                                                                                         )
   
   #AS stands for above staircase; variable is used as a filler space to keep the cell corresponding to the the above 'DS' object occupied
   castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows + nrow(which(castle == 'AS', arr.ind = T))),] = NA
-  castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows <- nrow(castle_dataframe)),1:5] = data.frame(which(castle=='AS', arr.ind = T), 
+  castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows <- nrow(castle_dataframe)),1:6] = data.frame(which(castle=='AS', arr.ind = T), 
                                                                                                                    rep('AS',nrow(which(castle=='AS', arr.ind = T))),
-                                                                                                                   rep(1,nrow(which(castle=='AS', arr.ind = T))))
+                                                                                                                   rep(1,nrow(which(castle=='AS', arr.ind = T))),
+                                                                                                                   rep('no',nrow(which(castle=='AS', arr.ind = T)))
+                                                                                                                   )
   
   #Adding new rows and coordinates to dataframe
   #Bottom of the castle is where the exit spawns
@@ -55,7 +59,7 @@ castle_create = function(){
   
   #Coordinates of the exit added to dataframe
   castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows + nrow(which(castle=='\U2395', arr.ind = T))),] = NA
-  castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows <- nrow(castle_dataframe)),1:5] = data.frame(which(castle=='\U2395', arr.ind = T), '\U2395', rep(1,1))
+  castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows <- nrow(castle_dataframe)),c(1:6)] = data.frame(which(castle=='\U2395', arr.ind = T), '\U2395', 1, 'no')
   
   
   #Spawning monster objects at any location that contains '1'
@@ -70,15 +74,25 @@ castle_create = function(){
   #simply adding fairies and genies without respect to each floor may result in an imbalance.
   #the majority of fairies and genies may be randomly placed at the top floors, bottom floors, or specfic floors.
   #New addition is the crystal ball
+  
+  random_number = sample(1:max_floors, 1)
   for(floor in 1:max_floors){
     castle[,,floor][sample(which(castle[,,floor] == '\U1F479'),fairy_proportion)] = '\U1F9DA'
     castle[,,floor][sample(which(castle[,,floor] == '\U1F479'),genie_proportion)] = '\U1F9DE'
+    #Spawn items
     castle[,,floor][sample(which(castle[,,floor] == '\U1F479'),1)] = '\U1F52E'
+    castle[,,floor][sample(which(castle[,,floor] == '\U1F479'),1)] = '\U1F371'
+    if (floor == random_number){
+      castle[,,floor][sample(which(castle[,,floor] == '\U1F479'),1)] = '\U0001f50e'
+    }
+    
   }
-  
+
+
   #Adding information to dataframe
   castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows + nrow(which(castle == '\U1F479', arr.ind = T))),] = NA
-  castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows <- nrow(castle_dataframe)),1:4] = data.frame(which(castle == '\U1F479', arr.ind = T), rep('\U1F479', nrow(which(castle =='\U1F479', arr.ind = T))))
+  castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows <- nrow(castle_dataframe)),c(1:4,6)] = data.frame(which(castle == '\U1F479', arr.ind = T), rep('\U1F479', nrow(which(castle =='\U1F479', arr.ind = T))),
+                                                                                                                   rep('no', nrow(which(castle =='\U1F479', arr.ind = T))))
   
   #Adding hp for each each monster to dataframe
   #Intial hp ranges from 5:10
@@ -90,17 +104,36 @@ castle_create = function(){
     base_hp_vector = base_hp_vector + 10
   }
   
-  #Adding fairy,genie coordinate, and crystal ball  information to the dataframe
+  #Adding fairy,genie coordinate, and invebtory items information to the dataframe
   castle_dataframe[(castle_dataframe_rows + nrow(which(castle == '\U1F9DA', arr.ind = T))),] = NA
-  castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows <- nrow(castle_dataframe)),1:5] = data.frame(which(castle == '\U1F9DA', arr.ind = T), rep('\U1F9DA', nrow(which(castle =='\U1F9DA', arr.ind = T))),
-                                                                                                                   rep(1,nrow(which(castle=='\U1F9DA', arr.ind = T))))
+  castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows <- nrow(castle_dataframe)),1:6] = data.frame(which(castle == '\U1F9DA', arr.ind = T), rep('\U1F9DA', nrow(which(castle =='\U1F9DA', arr.ind = T))),
+                                                                                                                   rep(1,nrow(which(castle=='\U1F9DA', arr.ind = T))),
+                                                                                                                   rep('no',nrow(which(castle=='\U1F9DA', arr.ind = T)))
+                                                                                                                   )
   
   castle_dataframe[(castle_dataframe_rows  + nrow(which(castle == '\U1F9DE', arr.ind = T))),] = NA
-  castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows <- nrow(castle_dataframe)),1:5] = data.frame(which(castle == '\U1F9DE', arr.ind = T), rep('\U1F9DE', nrow(which(castle =='\U1F9DE', arr.ind = T))),
-                                                                                                                   rep(1,nrow(which(castle=='\U1F9DE', arr.ind = T))))
+  castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows <- nrow(castle_dataframe)),1:6] = data.frame(which(castle == '\U1F9DE', arr.ind = T), rep('\U1F9DE', nrow(which(castle =='\U1F9DE', arr.ind = T))),
+                                                                                                                   rep(1,nrow(which(castle=='\U1F9DE', arr.ind = T))),
+                                                                                                                   rep('no',nrow(which(castle=='\U1F9DE', arr.ind = T)))
+                                                                                                                   )
   castle_dataframe[(castle_dataframe_rows  + nrow(which(castle == '\U1F52E', arr.ind = T))),] = NA
-  castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows <- nrow(castle_dataframe)),1:5] = data.frame(which(castle == '\U1F52E', arr.ind = T), rep('\U1F52E', nrow(which(castle =='\U1F52E', arr.ind = T))),
-                                                                                                                   rep(1,nrow(which(castle=='\U1F52E', arr.ind = T))))
+  castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows <- nrow(castle_dataframe)),1:6] = data.frame(which(castle == '\U1F52E', arr.ind = T), rep('\U1F52E', nrow(which(castle =='\U1F52E', arr.ind = T))),
+                                                                                                                   rep(1,nrow(which(castle=='\U1F52E', arr.ind = T))),
+                                                                                                                   rep('yes',nrow(which(castle=='\U1F52E', arr.ind = T)))
+                                                                                                                   )
+  
+  castle_dataframe[(castle_dataframe_rows  + nrow(which(castle == '\U1F371', arr.ind = T))),] = NA
+  castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows <- nrow(castle_dataframe)),1:6] = data.frame(which(castle == '\U1F371', arr.ind = T), rep('\U1F371', nrow(which(castle =='\U1F371', arr.ind = T))),
+                                                                                                                   rep(1,nrow(which(castle=='\U1F371', arr.ind = T))),
+                                                                                                                   rep('yes',nrow(which(castle=='\U1F371', arr.ind = T)))
+  )
+  
+  castle_dataframe[(castle_dataframe_rows  + nrow(which(castle == '\U0001f50e', arr.ind = T))),] = NA
+  castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows <- nrow(castle_dataframe)),1:6] = data.frame(which(castle == '\U0001f50e', arr.ind = T), rep('\U0001f50e', nrow(which(castle =='\U0001f50e', arr.ind = T))),
+                                                                                                                   rep(1,nrow(which(castle=='\U0001f50e', arr.ind = T))),
+                                                                                                                   rep('yes',nrow(which(castle=='\U0001f50e', arr.ind = T)))
+  )
+  
   #Spawning doors at coordinates that are objects
   for(coordinate in 1:nrow(castle_dataframe)){
     x = unlist(castle_dataframe[coordinate,1:3])

@@ -4,6 +4,8 @@ source('Castle_Create.R')
 source('Events.R')
 source('API.R')
 source('Classes.R')
+source('Inventory.R')
+source('Inventory_Cursor.R')
 #The dot hides variable from global environment
 #Variable used to determine if the player is greeted with the 
 #welcome screen or not
@@ -15,7 +17,8 @@ castle_descent = function(){
   castle_data = castle_create()
   #creating a class for the player
   player = player_class(current_coordinate = which(castle_data$castle=='\U1F93A', arr.ind = T),
-                        inventory = list('\U1F52E' = 0),
+                        hidden_inventory = list('\U1F52E' = 0, '\U1F371' = 0, '\U0001f50e' = 0),
+                        observable_inventory = matrix(c('','\U25B2',rep('',4)),nrow = 2, ncol = 3),
                         zombie_halt = 0,
                         hp = 100,
                         attack_range=5:10,
@@ -92,7 +95,7 @@ castle_descent = function(){
     player$stimulus_time = as.numeric(Sys.time())
     read_console_player_movement_action()
     if(player_action == 'i'){
-      player$encountered_object = '\U1F52E'
+      player$encountered_object = 'inventory'
     }
     else{
       #Get the movement coordinate which is the sum of the player coordinate and the vector in the movement dictionary
@@ -122,7 +125,13 @@ castle_descent = function(){
         player$castle_dataframe_row = which(castle_data$dataframe$x == player$movement_coordinate[1] & castle_data$dataframe$y == player$movement_coordinate[2] & castle_data$dataframe$z == player$movement_coordinate[3])
         number = castle_data$dataframe[player$castle_dataframe_row,'hp']
         if(number > 0){
-          player$encountered_object = castle_data$dataframe[player$castle_dataframe_row,'object']
+          if(castle_data$dataframe[player$castle_dataframe_row,'item'] == 'yes'){
+            player$encountered_object = 'item'
+          }
+          else{
+            player$encountered_object = castle_data$dataframe[player$castle_dataframe_row,'object']
+          }
+          
         }
       }
     }
@@ -168,16 +177,20 @@ castle_descent = function(){
                castle_data = player$move_to_new_floor_event(castle_data = castle_data)
                event_output = zombie$move_to_new_floor_event(castle_data = castle_data, player = player)},
              '\U2395' = {
-               if (player$floor < player$total_floors){
+               if(!(castle_data$dataframe[player$castle_dataframe_row,'object'] == '\U2395')){
                  castle_data = player$move_to_new_floor_event(castle_data = castle_data)
                  event_output = zombie$move_to_new_floor_event(castle_data = castle_data, player = player)
                }},
              'AS' = {
                event_output = upstairs_event(castle_data = castle_data, player = player)
              },
-             '\U1F52E' = {
-               event_output = inventory_event(castle_data = castle_data, player = player, player_action = player_action)
-               }
+             'item' = {
+               player$encountered_object = castle_data$dataframe[player$castle_dataframe_row,'object']
+               event_output = item_event(castle_data = castle_data, player = player)
+             },
+             'inventory' = {
+               event_output = inventory(castle_data = castle_data, player = player)
+             }
       )
       #Collect the outputs from each function
       castle_data = event_output[1:3]

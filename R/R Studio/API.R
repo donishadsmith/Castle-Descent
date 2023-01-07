@@ -52,11 +52,11 @@ read_console_player_monster_action= function() {
 }
 
 read_console_player_inventory_action= function() {
-  print('Temporarily halt zombie movement(s) or leave your inventory (l).', quote = F)
+  print('a (left), d(right), u (use), e (exit inventory): ',quote = F)
   while (rstudioapi::isAvailable()) {
     player_action <<- tolower(rstudioapi::getConsoleEditorContext()$contents)
     
-    if (player_action %in% c('s','l')) {
+    if(player_action %in% c('a','d','u','e')) {
       rstudioapi::sendToConsole("", execute = F)
       return(player_action)
     }
