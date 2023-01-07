@@ -15,7 +15,7 @@ Additionally, the zombie uses pathfinding, to minimize the distance to the playe
 <img width="363" alt="Screenshot 2022-12-30 at 9 47 46 PM" src="https://user-images.githubusercontent.com/112973674/210123652-c1020690-b7ea-4c31-b400-7dcac0211afb.png">
 <img width="359" alt="Screenshot 2022-12-30 at 9 44 43 PM" src="https://user-images.githubusercontent.com/112973674/210123649-25cc557b-6634-4d24-acd3-8b67676b441f.png">
 
-Added new feature - inventory for 3 new items (available in the R version only for now). Currently working on adding this feature to the python version. 
+Added new feature - inventory for 3 new items (available in the R version only for now). Currently working on adding this feature to the python version. The inventory matrix wraps around just like the castle array. So going out of bounds will spawn the cursor on the opposite side. 
 
 <img width="369" alt="Screenshot 2023-01-07 at 1 10 40 AM" src="https://user-images.githubusercontent.com/112973674/211138746-600aa86b-453a-4f88-b6bb-eb9545b4ab20.png">
 <img width="373" alt="Screenshot 2023-01-07 at 1 10 47 AM" src="https://user-images.githubusercontent.com/112973674/211138749-410b3427-d931-4dbf-9126-0183fa0ec3bd.png">
