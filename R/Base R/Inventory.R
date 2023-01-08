@@ -66,7 +66,6 @@ inventory = function(castle_data,player){
              '\U1F52E' = {
                player$zombie_halt = sample(10:20,1)
                print(paste('Zombie halted for',player$zombie_halt,'steps.'), quote = F)
-               player$hidden_inventory[[object]] = player$hidden_inventory[[object]] - 1
              },
              '\U1F371' = {
                print('Your HP increased by 20 points.',quote = F)
