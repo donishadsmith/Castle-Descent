@@ -20,6 +20,6 @@ Added new feature - inventory for 3 new items (available in the R version only f
 <img width="371" alt="Screenshot 2023-01-07 at 2 17 53 AM" src="https://user-images.githubusercontent.com/112973674/211139057-e7da69cc-8c44-4892-9c70-02f4f1d4644c.png">
 <img width="369" alt="Screenshot 2023-01-07 at 1 10 40 AM" src="https://user-images.githubusercontent.com/112973674/211138746-600aa86b-453a-4f88-b6bb-eb9545b4ab20.png">
 <img width="373" alt="Screenshot 2023-01-07 at 1 10 47 AM" src="https://user-images.githubusercontent.com/112973674/211138749-410b3427-d931-4dbf-9126-0183fa0ec3bd.png">
-<img width="369" alt="Screenshot 2023-01-07 at 1 12 32 AM" src="https://user-images.githubusercontent.com/112973674/211138750-74f83dd0-d052-41b5-854d-c7b8076e00f4.png">
+
 
 
