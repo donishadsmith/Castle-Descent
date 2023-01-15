@@ -1,13 +1,13 @@
-import numpy as np , time
 from Castle_Create import castle_create
 #Get player and zombie classes
 from Classes import * 
 #Get all the game events
 from Events import * 
-#Get functions new_line(num) to add new lines and viewer() to print the game screen
+#Get functions new_line(num) to add new lines and display_array() to print the game screen
 from Display import *
 #Player and zombie controllers. Player can move one unit in four directions, zombie can move 1 unit in 8 directions
 from Controllers import *
+from Inventory import inventory
 
 
 #Used to determine the intro the player recieves depending on how many times the game is repeated
@@ -20,8 +20,10 @@ def castle_descent():
     castle,castle_info = castle_create()
     #Add values to player and zombie attributes
     player = player_class(hp = 100,
-                          inventory = dict({
-                              u'\U0001F52E': 0
+                          hidden_inventory = dict({
+                              u'\U0001F52E': 0,
+                              u'\U0001F371': 0,
+                              u'\U0001F50E': 0 
                           }),
                           zombie_halt = 0,
                           attack_range = [num for num in range(5,11)],
@@ -36,6 +38,12 @@ def castle_descent():
                           previous_game_update_time = 0,
                           acceleration = 0,
                           total_monsters =  [floor[0] for floor in [(key[0],object[0]) for key,object in castle_info.items() if object[0] == u'\U0001f479']])
+    #Create observable inventory array
+    inventory_array = np.array(np.zeros(shape = [2,3]),dtype = 'U1')
+    inventory_array[:] = ''
+    #Add cursor
+    inventory_array[1,0] = u'\u25B2'
+    player.observable_inventory = inventory_array
     #Calculate the number of monsters needed to be defeated
     player.monster_threshold = int(len([floor for floor in player.total_monsters if floor == player.floor])*0.60)
     #Get zombie coordinate
@@ -74,7 +82,10 @@ def castle_descent():
                     object = object[0]
             castle[coord] = u'\u2395'
         #Displays current floor/grid
-        viewer(castle[player.floor])
+        d = [x for x in player.hidden_inventory.keys()]
+        test_dict = [[key,object] for key,object in castle_info.items() if all([key[0] == player.floor,object[0] in ['D',d[0], d[1], d[2],u'\u2395']])]
+        print(test_dict)
+        display_array(castle[player.floor])
         
         match object:
             case 'D': 
@@ -82,7 +93,11 @@ def castle_descent():
             case u'\u2395': 
                 print('The location of the exit has been revealed!')
             case _:
-                print(f'{player.monster_threshold} required to reveal the door.')    
+                if player.monster_threshold > 1:
+                    print(f'{player.monster_threshold} monsters required to be defeated  reveal the door.')  
+                else:
+                    print(f'{player.monster_threshold} monster required to be defeated  reveal the door.')
+
                 
         #Information if player finds a crystal ball and uses the crystal ball in their inventory
         #To stop the zombie for 10 - 20 steps
@@ -104,7 +119,7 @@ def castle_descent():
         
         #If player acesses inventory, the object is the crystal ball
         if player_action == 'i':
-            player.encountered_object = u'\U0001F52E'
+            player.encountered_object = player.controller['i']
         #Else, the movement coordinate is updated and the dictionary is accessed, if the movement coordinate corresponds to the door
         else:
             #Get new movement coordinate and encountered object
@@ -147,26 +162,31 @@ def castle_descent():
                 zombie.distance_to_player =  0
                 
         else: 
-            #If the encountered item is not 
-            #Match case to relevent event function depending on encountered items   
-            match player.encountered_object:
-                case '\U0001f9da':
-                    castle,player,castle_info = fairy_event(castle,player,castle_info)
-                case u'\U0001F9DE':
-                    castle,player,castle_info = genie_event(castle,player,castle_info)
-                case u'\U0001f479':
-                    castle,player,castle_info = monster_event(castle,player,castle_info)
-                case 'D':
-                    castle = player.move_to_next_floor_event(castle)
-                    castle = zombie.move_to_next_floor(castle,player)
-                case u'\u2395':
-                    if player.floor < player.total_floors:
+            if not any([player.floor == player.total_floors, player.encountered_object == u'\u2395']):
+                #If the encountered item is not 
+                #Match case to relevent event function depending on encountered items   
+                match player.encountered_object:
+                    case '\U0001f9da':
+                        castle,player,castle_info = fairy_event(castle,player,castle_info)
+                    case u'\U0001F9DE':
+                        castle,player,castle_info = genie_event(castle,player,castle_info)
+                    case u'\U0001f479':
+                        castle,player,castle_info = monster_event(castle,player,castle_info)
+                    case 'D':
                         castle = player.move_to_next_floor_event(castle)
                         castle = zombie.move_to_next_floor(castle,player)
-                case 'A':
-                    upstairs_event(castle,player)
-                case u'\U0001F52E':
-                    castle,player,castle_info = inventory_event(castle,player,castle_info, player_action)
+                    case u'\u2395':
+                        if player.floor < player.total_floors:
+                            castle = player.move_to_next_floor_event(castle)
+                            castle = zombie.move_to_next_floor(castle,player)
+                    case 'A':
+                        upstairs_event(castle,player)
+                    case 'item':
+                        player.encountered_object = castle_info[player.movement_coordinate][0]
+                        castle,player,castle_info = item_event(castle,player,castle_info)
+                    case 'inventory':
+                        player = inventory(player, sequence = 'free movement')
+                    
     new_line(20) 
     #Events if loop is broken
     print(f'Floor {player.floor + 1} of {len(castle)}')   
@@ -177,7 +197,7 @@ def castle_descent():
         prompt = 'You found the exit!'
         castle[player.movement_coordinate] = u'\u2395'
         
-    viewer(castle[player.floor])
+    display_array(castle[player.floor])
     print(prompt)
     
     #Retry

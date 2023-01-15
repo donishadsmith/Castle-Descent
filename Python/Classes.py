@@ -1,14 +1,15 @@
 #Creating player class to hold player information
-import numpy as np, time
+import numpy as np, time, copy
 #Get functions for adding new lines and displaying the array
 from Display import *
 
 class player_class:
-    def __init__(self, hp, inventory, current_coordinate,attack_range, floor, total_floors,controller,
+    def __init__(self, hp, hidden_inventory, current_coordinate,attack_range, floor, total_floors,controller,
                  previous_game_update_time,previous_velocity,max_velocity,acceleration, zombie_halt,
                   total_monsters):
         self.hp = hp
-        self.inventory = inventory
+        self.hidden_inventory = hidden_inventory
+        self.observable_inventory = None
         self.current_coordinate = current_coordinate
         self.movement_coordinate = None
         self.encountered_object = None
@@ -34,12 +35,14 @@ class player_class:
             if x != 0:
                 self.movement_dimension  = i
         coordinate_difference = coordinate_difference[self.movement_dimension]
+        coordinate_difference = coordinate_difference//abs(coordinate_difference)
         self.current_velocity = coordinate_difference/(self.current_game_update_time - self.stimulus_time)
-        self.acceleration = self.current_velocity-self.previous_velocity/(self.current_game_update_time - self.previous_game_update_time)
-        self.previous_velocity = self.current_velocity
-        self.previous_game_update_time = self.current_game_update_time
+        self.acceleration = (self.current_velocity - self.previous_velocity)/(self.current_game_update_time - self.previous_game_update_time)
+        self.previous_velocity = copy.deepcopy(self.current_velocity)
+        self.previous_game_update_time = copy.deepcopy(self.current_game_update_time)
         if abs(self.current_velocity) > abs(self.max_velocity):
-            self.max_velocity = self.current_velocity
+            self.max_velocity = copy.deepcopy(self.current_velocity)
+    
     
         
     #Function for player movement
@@ -64,16 +67,20 @@ class player_class:
         self.movement_coordinate = tuple(self.movement_coordinate)
         #Get the value from dictionary
         self.encountered_object = castle[self.movement_coordinate]
-        
+        #Change the encountered object from the door unicode if it has not been used or defeated 
         if self.encountered_object == u'\U0001f6aa':
             if castle_info[self.movement_coordinate][1] > 0:
-                self.encountered_object = castle_info[self.movement_coordinate][0]
+                #Check if it is an item
+                if castle_info[self.movement_coordinate][2] == 'yes':
+                    self.encountered_object = 'item'
+                else:
+                    self.encountered_object = castle_info[self.movement_coordinate][0]
 
     def move_to_next_floor_event(self,castle):
         new_line(20)
         print(f'You found the stars! You can now advance to floor {self.floor + 2}!')
         print(f'Floor {self.floor + 1} of {len(castle)}')
-        viewer(castle[self.floor])
+        display_array(castle[self.floor])
         castle[self.current_coordinate] = ''
         self.floor += 1
         self.current_coordinate = tuple(np.array(self.current_coordinate) + np.array((1,0,0)))
@@ -83,7 +90,12 @@ class player_class:
         time.sleep(1)
         return castle
     
-    
+    def reset_inventory(self):
+        self.observable_inventory[0,:] = ''
+        for key, value in self.hidden_inventory.items():
+            if value > 0:
+                self.observable_inventory[0,np.where(self.observable_inventory[0,:] == '')[0][0]] = key
+        
 #Creating zombie class to hold player information          
 class zombie_class:
     def __init__(self,current_coordinate,controller):
@@ -115,7 +127,6 @@ class zombie_class:
             else:
                 displacement_vector = np.array((0,0,displacement))
             predicted_player_position = tuple(np.array(player.current_coordinate) + displacement_vector)
-            
             distance_to_predicted_player_position = []
             for possible_coordinate in movement_vector:
                 distance = self.chebyshev_distance(possible_coordinate,predicted_player_position)

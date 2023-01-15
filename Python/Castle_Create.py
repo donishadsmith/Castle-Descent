@@ -28,32 +28,44 @@ def castle_create():
         spawnable_coord = random.sample(list(zip(*np.where(castle[floor] == '1'))),1)[0]
         castle[floor][spawnable_coord] = 'D'
         castle[floor+1][spawnable_coord] = 'A'
-        object_info.append([floor,spawnable_coord[0],spawnable_coord[1],'D',1])
-        object_info.append([floor+1,spawnable_coord[0],spawnable_coord[1],'A',1])
+        object_info.append([floor,spawnable_coord[0],spawnable_coord[1],'D',1, 'no'])
+        object_info.append([floor+1,spawnable_coord[0],spawnable_coord[1],'A',1, 'no'])
         if floor == castle_z_length-2:
             spawnable_coord = random.sample(list(zip(*np.where(castle[floor+1] == '1'))),1)[0]
             castle[floor+1][spawnable_coord] = u'\u2395'
-            object_info.append([floor+1,spawnable_coord[0],spawnable_coord[1],u'\u2395',1])
+            object_info.append([floor+1,spawnable_coord[0],spawnable_coord[1],u'\u2395',1,'no'])
 
-    
+    random_floor = random.sample([num for num in range(castle_z_length)],2)
     #Spawn fairies and genies
     #Proportion og each floor that will contain fairies and genies
-    proportion = int(round(len(castle[:][castle[:] == '1'])*0.05))
+    proportion = int(round(len(castle[:][castle[:] == '1'])*0.025,0))
     for floor in range(0,castle_z_length):
         #Spawn fairies  
         fairy_coordinates = random.sample(list(zip(*np.where(castle[floor] == '1'))),proportion)
         for fairy_coordinate in fairy_coordinates:
             castle[floor][fairy_coordinate] = '\U0001f9da'
-            object_info.append([floor,fairy_coordinate[0],fairy_coordinate[1],'\U0001f9da',1])
+            object_info.append([floor,fairy_coordinate[0],fairy_coordinate[1],'\U0001f9da',1,'no'])
         #Spawn genies
         genie_coordinates = random.sample(list(zip(*np.where(castle[floor] == '1'))),proportion)
         for genie_coordinate in genie_coordinates:
             castle[floor][genie_coordinate] = u'\U0001F9DE'
-            object_info.append([floor,genie_coordinate[0],genie_coordinate[1],u'\U0001F9DE',1])
+            object_info.append([floor,genie_coordinate[0],genie_coordinate[1],u'\U0001F9DE',1,'no'])
         #Spawn Crystal Ball
-        crystal_ball_coordinate = random.sample(list(zip(*np.where(castle[floor] == '1'))),1)[0]
-        castle[floor][crystal_ball_coordinate] = u'\U0001F52E'
-        object_info.append([floor,crystal_ball_coordinate[0],crystal_ball_coordinate[1],u'\U0001F52E',1])
+        crystal_ball_coordinates = random.sample(list(zip(*np.where(castle[floor] == '1'))),2)
+        for crystal_ball_coordinate in crystal_ball_coordinates:
+            castle[floor][crystal_ball_coordinate] = u'\U0001F52E'
+            object_info.append([floor,crystal_ball_coordinate[0],crystal_ball_coordinate[1],u'\U0001F52E',1,'yes'])
+        #Spawn Bento Boxes
+        bento_box_coordinates = random.sample(list(zip(*np.where(castle[floor] == '1'))),2)
+        for bento_box_coordinate in bento_box_coordinates:
+            castle[floor][bento_box_coordinate] = u'\U0001F371'
+            object_info.append([floor,bento_box_coordinate[0],bento_box_coordinate[1],u'\U0001F371',1,'yes'])
+        #Spawn Magnifying Glass
+        if floor in random_floor:
+            magnifying_glass_coordinate = random.sample(list(zip(*np.where(castle[floor] == '1'))),1)[0]
+            castle[floor][magnifying_glass_coordinate] = u'\U0001F50E'
+            object_info.append([floor,magnifying_glass_coordinate[0],magnifying_glass_coordinate[1],u'\U0001F50E',1,'yes'])
+        
     
     #Spawn monsters   
     base_hp_vector = [num for num in range(5,11)]
@@ -65,7 +77,7 @@ def castle_create():
             base_hp_vector = [num + 5 for num in base_hp_vector]
         for monster_coordinate in monster_coordinates:
             hp = random.sample(base_hp_vector,1)[0]
-            object_info.append([floor,monster_coordinate[0],monster_coordinate[1],u'\U0001f479',hp])
+            object_info.append([floor,monster_coordinate[0],monster_coordinate[1],u'\U0001f479',hp,'no'])
         iteration += 1
 
     #Put information in dictionary
@@ -73,7 +85,7 @@ def castle_create():
     #Values in a list to ensure that these values can be changes when they need to be
     castle_info = {}
     for obj in object_info:
-        castle_info[(obj[0], obj[1], obj[2])] = [obj[3],obj[4]]       
+        castle_info[(obj[0], obj[1], obj[2])] = [obj[3],obj[4],obj[5]]       
 
     #Spawn doors
     for key in castle_info:
