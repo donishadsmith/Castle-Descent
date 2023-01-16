@@ -1,103 +1,141 @@
-inventory = function(castle_data,player){
-  
-  if(length(which(player$hidden_inventory > 0)) == 0){
-    cat(rep("\n", 50))
-    print('Inventory',quote = F)
-    cat('')
-    print(player$observable_inventory,quote = F)
-    cat('')
-    print('You have nothing in you inventory.',quote = F)
-  }
-  
-  else{
-    player_action = 'x'
-    object = player$observable_inventory[1]
-    while(!(player_action == 'u'| player_action == 'e')){
-      cat(rep("\n", 50))
-      print('Inventory',quote = F)
-      cat('\n')
-      print(player$observable_inventory,quote = F)
-      switch(object,
-             '\U1F52E' = {
-               cat('\n')
-               print('Crystal Ball',quote = F)
-               cat("\n")
-               print('Temporarily halts zombie movement.',quote = F)
-               },
-             '\U1F371' = {
-               cat('\n')
-               print('Bento Box',quote = F)
-               cat("\n")
-               print('Heals 20 hp.',quote = F)
-             },
-             '\U0001f50e' = {
-               cat('\n')
-               print('Magnifying Glass',quote = F)
-               cat("\n")
-               print('Reveals the door leading to stairs or exit.',quote = F)
-
-             }
-      )
-      cat("\n")
-      print(paste('Number in inventory: ',player$hidden_inventory[[object]]),quote = F)
-      cat('\n')
-      print('a (left), d(right), u (use), e (exit inventory): ',quote = F)
-      while(!(player_action %in% c('a','d','u','e'))){
-        player_action = tolower(keypress(block = T))
-      }
-      if(player_action %in% c('a','d')){
-        player = cursor$move_cursor(player,player_action)
-        object = player$observable_inventory[cursor$position - 1]
-        #Clear current player_action
-        player_action = 'x'
-      }
+item_inventory <- function(castle_data,player,game_sequence){
+  player_action <- ""
+  object <- player$observable_item_inventory[2]
+  healing_items <- c("\U1F371","\U1F9EA")
+  while(!(player_action == "e")){
+    new_line(50)
+    cat("Inventory")
+    new_line(1)
+    cat("___________________________________________")
+    new_line(2)
+    cat(player$observable_item_inventory)
+    new_line(1)
+    cat("___________________________________________")
+    new_line(2)
+    #Item descriptions
+    item_descriptions(object = object, cost = "no")
+    new_line(1)
+    cat("___________________________________________")
+    #Show number in inventory
+    new_line(2)
+    if(!(object == "")){
+      cat(sprintf("Number in inventory: %s",player$hidden_item_inventory[[object]]))
     }
-    
-    if(player_action == 'u'){
-      cat('\n')
-      #Reduce number of items left
-      player$hidden_inventory[[object]] = player$hidden_inventory[[object]] - 1
-      cat(rep("\n", 50))
-      print('Inventory',quote = F)
-      cat('\n')
-      print(player$observable_inventory,quote = F)
-      cat('\n')
-      switch(object,
-             '\U1F52E' = {
-               player$zombie_halt = sample(10:20,1)
-               print(paste('Zombie halted for',player$zombie_halt,'steps.'), quote = F)
-             },
-             '\U1F371' = {
-               print('Your HP increased by 20 points.',quote = F)
-               player$hp = player$hp + 20
-               print(paste('New HP:',player$hp),quote = F)
-             },
-             '\U0001f50e' = {
-               player$monster_threshold = 0
-               print('The door has been revealed.',quote = F)
-             }
-      )
-      #Erase and add back available items,
-      #Will have to update if numerous items get added in the future
-      #since this code erases and re-adds whenever an item is used
-      player$observable_inventory[1,1:3] = ''
-      
-      for(num in 1:length(player$hidden_inventory)){
-        item = names(player$hidden_inventory[num])
-        if(player$hidden_inventory[[item]] > 0){
-          empty_space = which(player$observable_inventory[1,] == '')[1]
-          player$observable_inventory[1,empty_space] = item
+    new_line(2)
+    #Player input
+    while(!(player_action %in% c("a","d","s","e"))){
+      cat("a(left), d(right), s(select), e(exit): ")
+      player_action = tolower(keypress(block = T))
+    }
+    #Move cursor
+    if(player_action %in% c("a","d")){
+      player <- cursor$move_cursor(player,player_action,game_sequence = "inventory")
+      object <- player$observable_item_inventory[cursor$position + 1]
+      #Clear current player_action
+      player_action <- ""
+    }
+    #Selection
+    else if(player_action == "s"){
+      #Use valid item
+      if(game_sequence == "free movement" | game_sequence == "battle" & object %in% healing_items){
+        player <- use_item(player = player, object = object)
+        #Check if objects are empty
+        if(0 %in% player$hidden_item_inventory){
+          player$reset_inventory()
+          }
+        player_action <- ""
+        object <- player$observable_item_inventory[cursor$position + 1]
+        }
+      else{
+        if(!(object == "")){
+          new_line(50)
+          cat("Inventory")
+          new_line(2)
+          cat(player$observable_item_inventory)
+          new_line(2)
+          cat("Cannot use this item in battle.")
+          player_action <- ""
+          Sys.sleep(1)
         }
       }
-      #Erase cursor
-      player$observable_inventory[2,1:3] = ''
-      #Reset cursor
-      cursor$position = 2
-      player$observable_inventory[2,1] = '\U25B2'
     }
-  }
-  Sys.sleep(1)
-  inventory_output = c(castle_data,player)
+    }
+  #Erase cursor and add back to slot 1
+  player$observable_item_inventory[which(player$observable_item_inventory == "\U2771")] <- ""
+  #Reset cursor position
+  cursor$position <- 1
+  player$observable_item_inventory[cursor$position] <- "\U2771"
+  inventory_output <- c(castle_data,player)
   return(inventory_output)
+  }
+  
+
+use_item <- function(player,object){
+  new_line(50)
+  #Reduce number of items left
+  player$hidden_item_inventory[[object]] <- player$hidden_item_inventory[[object]] - 1
+  new_line(50)
+  cat("Inventory")
+  new_line(1)
+  cat("___________________________________________")
+  new_line(2)
+  cat(player$observable_item_inventory)
+  new_line(1)
+  cat("___________________________________________")
+  new_line(2)
+  #Adding item effects to player
+  switch(object,
+         "\U1F52E" = {
+           player$zombie_halt <- player$zombie_halt + sample(10:20,1)
+           cat(sprintf("Zombie halted for %s steps.",player$zombie_halt))
+           },
+         "\U1F371" = {
+           if(player$hp == 100){
+             cat("You are already at full health.")
+             #Add back item
+             player$hidden_item_inventory[[object]] <- player$hidden_item_inventory[[object]] + 1
+             }
+           else if(player$hp + 20 > 100){
+             restore <- player$hp + 20 + (100 - (player$hp + 20))
+             cat(sprintf("Your HP increased by %s points",abs(100 - player$hp)))
+             player$hp <- restore
+             }
+           else{
+             cat("Your HP increased by 20 points.")
+             player$hp <- player$hp + 20
+             }
+           },
+         "\U0001f50e" = {
+           if(player$monster_threshold == 0){
+             cat("The door has already been revealed.")
+             #Add back item
+             player$hidden_item_inventory[[object]] <- player$hidden_item_inventory[[object]] + 1
+           }
+           else{
+             player$monster_threshold <- 0
+             cat("The door has been revealed.")
+           }
+           },
+         "\U1F9EA" = {
+           if(player$mana == 100){
+             cat("You mana is already maxed out.")
+             #Add back item
+             player$hidden_item_inventory[[object]] <- player$hidden_item_inventory[[object]] + 1
+             }
+           else if(player$mana + 30 > 100){
+             restore <- player$mana + 30 + (100 - (player$mana + 30))
+             cat(sprintf("Your mana increased by %s points",abs(100 - player$mana)))
+             player$mana <- restore
+             }
+           else{
+             cat("Your mana increased by 30 points.")
+             player$mana <- player$mana + 30
+           }
+           }
+         )
+         
+  Sys.sleep(1)
+  return(player)
+  
 }
 

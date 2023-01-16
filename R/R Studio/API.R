@@ -1,67 +1,60 @@
-#Fucntions for the API
-#Use RStudio's API to dynamically read R's Terminal
-read_console_try_again_action = function(){
-  print('Want to play again? Yes (y) or No (n)?', quote = F)
+#Functions for the API
+#Use RStudio"s API to dynamically read R's Terminal
+read_console_try_again_action <- function() {
+  cat("Want to play again? Yes(y) or No(n)?")
   #Loop will continue until player inputs valid response
-  while (rstudioapi::isAvailable()) {
-    player_action <<- tolower(rstudioapi::getConsoleEditorContext()$contents)
-    if( player_action %in% c('yes','y')){
+  while(rstudioapi::isAvailable()){
+    player_action <- tolower(rstudioapi::getConsoleEditorContext()$contents)
+    if(player_action %in% c("y")){
       #Needed to clear console
-      rstudioapi::sendToConsole("", execute = F)
-      castle_descent()
-    }
-    else if ( player_action %in% c('no','n')){
-      print("Thank you for playing Castle Descent!", quote = F)
-      return(noquote(""))
-    }
+      rstudioapi::sendToConsole("",execute = F)
+      start_game()
+      }
+    else if(player_action %in% c("no","n")){
+      new_line(2)
+      cat("Thank you for playing Castle Descent!")
+      return(cat(""))
+      }
     #Needed so that player can escape game by pressing ctrl + c.
     #It suspends execution of R expressions every n seconds
-    rstudioapi::sendToConsole("", execute = F)
+    rstudioapi::sendToConsole("",execute = F)
     Sys.sleep(0.2)
   }
-}
-
-
-read_console_player_movement_action = function() {
-  print('w (up), a (left), s (down), or, d (right), or check inventory(i)', quote = F)
-  while (rstudioapi::isAvailable()) {
-    player_action <<- tolower(rstudioapi::getConsoleEditorContext()$contents)
-    
-    if (player_action %in% c('w','a','s','d', 'i')) {
-      rstudioapi::sendToConsole("", execute = F)
-      return(noquote(""))
-    }
-    rstudioapi::sendToConsole("", execute = F)
-    Sys.sleep(0.2)
   }
-}
 
-read_console_player_monster_action= function() {
-  print('attack(a) or run(r)', quote = F)
-  while (rstudioapi::isAvailable()) {
-    player_action <<- tolower(rstudioapi::getConsoleEditorContext()$contents)
+
+read_console_player_movement_action <- function() {
+  cat("w(up), a(left), s(down), d(right), inventory(i)")
+  while(rstudioapi::isAvailable()) {
+    player_action <- tolower(rstudioapi::getConsoleEditorContext()$contents)
     
-    if (player_action %in% c('attack','a','r','run', 'i')) {
-      rstudioapi::sendToConsole("", execute = F)
+    if(player_action %in% c("w","a","s","d","i")) {
+      rstudioapi::sendToConsole("",execute = F)
       return(player_action)
-    }
-    
-    rstudioapi::sendToConsole("", execute = F)
+      }
+    rstudioapi::sendToConsole("",execute = F)
     Sys.sleep(0.2)
   }
-}
+  }
 
-read_console_player_inventory_action= function() {
-  print('a (left), d(right), u (use), e (exit inventory): ',quote = F)
-  while (rstudioapi::isAvailable()) {
-    player_action <<- tolower(rstudioapi::getConsoleEditorContext()$contents)
-    
-    if(player_action %in% c('a','d','u','e')) {
-      rstudioapi::sendToConsole("", execute = F)
+
+read_console_player_menu_action <- function(game_sequence){
+  if(game_sequence %in% c("battle","genie")){
+    prompt = "a (left), d(right), select (s): "
+    valid_actions = c("a","d","s")
+  }
+  else{
+    prompt = "a (left), d(right), select(s), exit(e): "
+    valid_actions = c("a","d","s","e")
+  }
+  cat(prompt)
+  while(rstudioapi::isAvailable()){
+    player_action <- tolower(rstudioapi::getConsoleEditorContext()$contents)
+    if(player_action %in% valid_actions) {
+      rstudioapi::sendToConsole("",execute = F)
       return(player_action)
-    }
-    
-    rstudioapi::sendToConsole("", execute = F)
+      }
+    rstudioapi::sendToConsole("",execute = F)
     Sys.sleep(0.2)
   }
-}
+  }
