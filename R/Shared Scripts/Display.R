@@ -1,6 +1,6 @@
 #Displaying array
 display_array <- function(castle_data,player,floor,total_floors,mana,hp,money,game_sequence,monster_hp){
-  new_line(2)
+  new_line(50)
   if(!game_sequence == "next level"){
     floor <- player$floor 
     total_floors <- player$total_floors

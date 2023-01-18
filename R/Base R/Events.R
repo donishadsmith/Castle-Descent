@@ -2,8 +2,6 @@
 
 #Function for fairy event
 fairy_event <- function(castle_data,player){
-  #Add space between previously printed screen and new screen
-  new_line(50)
   castle_data$castle[player$movement_coordinate] <- player$encountered_object
   display_array(castle_data = castle_data,player = player,game_sequence = "non-battle")
   cat("You encountered a fairy!")
@@ -38,7 +36,6 @@ fairy_event <- function(castle_data,player){
   if(castle_data$dataframe[player$castle_dataframe_row,"hp"] == 0){
     #Adding zero to dataframe so that fairy event is deactivated
     castle_data$dataframe[player$castle_dataframe_row,"hp"] <- 0
-    new_line(50)
     display_array(castle_data = castle_data,player = player,game_sequence = "non-battle")
     cat("The fairy disappeared...")
     #Add pause to allow player to read information
@@ -50,14 +47,12 @@ fairy_event <- function(castle_data,player){
   }
 #Function for genie event
 genie_event <- function(castle_data,player){
-  new_line(50)
   castle_data$castle[player$movement_coordinate] <- player$encountered_object
   display_array(castle_data = castle_data,player = player,game_sequence = "non-battle")
   cat("You encountered a genie!")
   player_choice <- ""
   player_action <- ""
   while(!player_action == "s"){
-    new_line(50)
     display_array(castle_data = castle_data,player = player,game_sequence = "non-battle")
     cat("___________________________________________________")
     new_line(1)
@@ -80,7 +75,6 @@ genie_event <- function(castle_data,player){
   }
   
   if(player_choice == "Increase Attack"){
-    new_line(50)
     display_array(castle_data = castle_data,player = player,game_sequence = "non-battle")
     attack_increase <- sample(1:5,1)
     cat(sprintf("Your Attack range and Enchanced Attack range increased by %s points.",attack_increase))
@@ -92,7 +86,6 @@ genie_event <- function(castle_data,player){
     cat(sprintf("New Enchanced Attack range: %s:%s",min(player$enhanced_attack_range),max(player$enhanced_attack_range)))
   }
   else if(player_choice == "Reduce Mana Cost"){
-    new_line(50)
     display_array(castle_data = castle_data,player = player,game_sequence = "non-battle")
     decrease_mana_cost <- sample(1:5,1)
     if(player$mana_cost - decrease_mana_cost < 1){
@@ -114,7 +107,6 @@ genie_event <- function(castle_data,player){
   #Adding back door and a zero in dataframe
   castle_data$castle[player$movement_coordinate] <- "\U1F6AA"
   if(!player_action == "exit"){
-    new_line(50)
     display_array(castle_data = castle_data,player = player,game_sequence = "non-battle")
     cat("The genie disappeared...")
     castle_data$dataframe[player$castle_dataframe_row,"hp"] <- 0
@@ -132,7 +124,6 @@ genie_event <- function(castle_data,player){
   }
 #Function for monster event
 monster_event <- function(castle_data,player){
-  new_line(50)
   #Go to dataframe and extract 
   castle_data$castle[player$movement_coordinate] <- player$encountered_object
   monster_hp <- castle_data$dataframe[player$castle_dataframe_row, "hp"]
@@ -146,7 +137,6 @@ monster_event <- function(castle_data,player){
   while(!(player_choice == "Run" | monster_hp == 0 | player$hp == 0)){
     #Player input command for battle menu
     while(!player_action == "s"){
-      new_line(50)
       display_array(castle_data = castle_data,player = player,game_sequence = "battle",
                     monster_hp = monster_hp)
       cat("___________________________________________________")
@@ -169,7 +159,6 @@ monster_event <- function(castle_data,player){
         #Check mana
         if(!player_choice %in% c("Attack","Run", "Inventory")){
           if(player$mana - player$mana_cost < 0){
-            new_line(50)
             display_array(castle_data = castle_data,player = player,game_sequence = "battle",
                           monster_hp = monster_hp)
             cat("___________________________________________________")
@@ -214,7 +203,6 @@ monster_event <- function(castle_data,player){
 }
 #Function for monster combat
 battle_sequence <- function(castle_data,player,monster_hp,player_choice){
-  new_line(50)
   display_array(castle_data = castle_data,player = player,game_sequence = "battle",
                 monster_hp = monster_hp)
   if(player_choice == "Attack"){
@@ -258,7 +246,6 @@ battle_sequence <- function(castle_data,player,monster_hp,player_choice){
 
 
 upstairs_event <- function(castle_data,player){
-  new_line(50)
   display_array(castle_data = castle_data,player = player,game_sequence = "non-battle")
   cat("You already came from upstairs.")
   new_line(2)

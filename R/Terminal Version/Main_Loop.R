@@ -64,9 +64,7 @@ start_game <- function(){
     Sys.sleep(1)
   }
   
-  while(!(player$encountered_object=="\U2395" & player$floor == player$total_floors | player$hp <= 0 | zombie$distance_to_player == 0)){
-    
-    new_line(50)
+  while(!(player$encountered_object=="\U2395" | player$hp <= 0 | zombie$distance_to_player == 0)){
     #If player kills a certain number of monsters, the stairs or exit is revealed
     object <- ""
     if(player$monster_threshold == 0){
@@ -224,7 +222,6 @@ start_game <- function(){
     }
     }
   #if/else statement to continue or quit when they die
-  new_line(50)
   if(zombie$distance_to_player == 0){
     player$hp <- 0
     prompt <- "You were eaten by the zombie" 
