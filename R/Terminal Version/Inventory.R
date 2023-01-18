@@ -50,8 +50,12 @@ item_inventory <- function(castle_data,player,game_sequence){
         if(!(object == "")){
           new_line(50)
           cat("Inventory")
+          new_line(1)
+          cat("___________________________________________")
           new_line(2)
           cat(player$observable_item_inventory)
+          new_line(1)
+          cat("___________________________________________")
           new_line(2)
           cat("Cannot use this item in battle.")
           player_action <- ""
