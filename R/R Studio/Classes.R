@@ -53,12 +53,10 @@ player_class <-  setRefClass("player_info",
                                                hp = hp,
                                                mana = mana,
                                                money = money)
-                                 new_line(2)
                                  if(monster_threshold > 0){
                                    cat("You must defeat all monsters on this floor to progress.")
                                  }
                                  else{
-                                   
                                    cat(sprintf("You can now advance to floor %s !", floor + 1))
                                    #Erase player
                                    castle_data$castle[current_coordinate] <- ""
