@@ -14,4 +14,7 @@ zombie_movement.update({
     'diag_down_left' : np.array((0,1,-1)), 
     'diag_down_right': np.array((0,1,1))   
 })
-player_controller.update({'i': 'inventory'})
+player_controller.update({
+    'i': 'inventory',
+    'q': 'quit'
+})

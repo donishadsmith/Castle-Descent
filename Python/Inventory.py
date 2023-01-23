@@ -1,83 +1,105 @@
-import copy, random, time, numpy as np
+import copy, random, time, numpy as np, msvcrt
 from Display import *
-from Inventory_Cursor import cursor 
-def inventory(player,sequence):
+from Item_Description import item_description
+from Menu_Cursor import cursor 
+def inventory(player,game_sequence):
+    cursor.position = 0
     player_action = ''
-    object = player.observable_inventory[0,0]
+    object = copy.deepcopy(player.observable_item_inventory[1])
     while not player_action == 'e':
         new_line(50)
-        print('Inventory\n')
-        display_array(player.observable_inventory)
+        print('Inventory')
+        print('___________________________________________')
         new_line(1)
-        match object:
-            case u'\U0001F52E': 
-                print('Crystal Ball')
-                new_line(1)
-                print('Temporarily halts zombie movement.')
-            case u'\U0001F371': 
-                print('Bento Box')
-                new_line(1)
-                print('Heals 20 hp.')                   
-            case u'\U0001F50E':
-                print('Magnifying Glass')
-                new_line(1)
-                print('Reveals the door leading to stairs or exit.')
-            case _:
-                print('???')
-
+        print(''.join(['{}'.format(cell + ' ') for cell in player.observable_item_inventory])) 
+        new_line(1)
+        print('___________________________________________')
+        #Item description
+        item_description(object = object, cost = 'no')
+        print('___________________________________________')
+        new_line(1)
         if not object == '':     
             new_line(1)
-            print(f'Number in inventory: {player.hidden_inventory[object]}')
+            print(f'Number in inventory: {player.hidden_item_inventory[object]}')
             new_line(1)
-        while not player_action in ['a','d','u','e']:
-            player_action = input('a (left), d(right), u (use), e (exit inventory): ').lower()
+        while not player_action in ['a','d','s','e']:
+            print('a(left), d(right), s(select), e(exit): ')
+            player_action = msvcrt.getch().decode('utf-8').lower()
         if player_action in ['a', 'd']:
-            player = cursor.move_cursor(player, player_action)
-            object_position = copy.deepcopy(cursor.position)
-            object_position -= np.array((1,0))
-            object = player.observable_inventory[tuple(object_position)]
+            player = cursor.move_cursor(object = player, player_action = player_action, game_sequence = 'inventory')
             player_action = ''
-        if player_action == 'u':
-            if sequence == 'free movement' or sequence == 'battle' and object == u'\U0001F371':
-                player = use_item(player,object)
-                player.reset_inventory()
+        if player_action == 's':
+            if any([game_sequence == 'free movement', game_sequence == 'battle' and object in [u'\U0001F371',u'\U0001F9EA']]):
+                player = use_item(player = player,object = object)
+                if 0 in player.hidden_item_inventory.values():
+                    player.reset_inventory()
                 player_action = ''
-                object_position = copy.deepcopy(cursor.position)
-                object_position -= np.array((1,0))
-                object = player.observable_inventory[tuple(object_position)]
+            elif object != '':
+                new_line(50)
+                print('Inventory')
+                print('___________________________________________')
+                new_line(1)
+                print(''.join(['{}'.format(cell + ' ') for cell in player.observable_item_inventory])) 
+                new_line(1)
+                print('___________________________________________')
+                new_line(1)
+                print('Cannot use this item during battle.')
+                player_action = ''
+                time.sleep(1) 
             else:
-                if not object == '':
-                    new_line(50)
-                    print('Inventory\n')
-                    display_array(player.observable_inventory)
-                    new_line(1)
-                    print('Cannot use this item during battle.')
-                    player_action = ''
-                    time.sleep(1) 
+                player_action = ''
+
+        #Get object arrow is pointing to
+        object = copy.deepcopy(player.observable_item_inventory[cursor.position + 1])
+    #If loop is broken, reset cursor position
     #Erase cursor
-    player.observable_inventory[1,:] = ''
-    #Add back cursor
-    player.observable_inventory[1,0] = '\u25B2'
-    cursor.position = np.array((1,0))
+    player.observable_item_inventory[np.where(player.observable_item_inventory == u'\u2771')[0][0]] = ''
+    player.observable_item_inventory[0] = u'\u2771' 
     return player
 
 def use_item(player, object):
     new_line(50)
-    print('Inventory\n')
-    display_array(player.observable_inventory)
+    #Reduce number in inventory
+    player.hidden_item_inventory[object] -= 1
+    print('Inventory')
+    print('___________________________________________')
     new_line(1)
-    player.hidden_inventory[object] -= 1
+    print(''.join(['{}'.format(cell + ' ') for cell in player.observable_item_inventory])) 
+    new_line(1)
+    print('___________________________________________')
+    new_line(1)
     match object:
         case u'\U0001F52E': 
             player.zombie_halt = random.sample([num for num in range(10,21)],1)[0]
             print(f'Zombie halted for {player.zombie_halt} steps')
             print('Temporarily halts zombie movement.')
         case u'\U0001F371': 
-            print('Your HP increased by 20 points.')
-            player.hp += 20
-            print(f'New HP: {player.hp}')                  
+            if player.hp == 100:
+                print('You are already at full health.')
+                #Add back item
+                player.hidden_item_inventory[object] += 1
+            elif player.hp + 20 > 100:
+                restore = player.hp + 20 + (100 - (player.hp + 20))
+                print(f'Your HP increased by {abs(100 - player.hp)} points.')
+                player.hp = copy.deepcopy(restore)
+            else:
+                print('Your HP increased by 20 points.')
+                player.hp += 20
         case u'\U0001F50E':
             player.monster_threshold = 0
             print('The door has been revealed.')
+        case u'\U0001F9EA':
+            if player.mana == 100:
+                print('Your mana is already maxed out.')
+                #Add back item
+                player.hidden_item_inventory[object] += 1
+            elif player.mana + 30 > 100:
+                restore = player.mana + 30 + (100 - (player.mana + 30))
+                print(f'Your mana increased by {abs(100 - player.mana)} points.')
+                player.mana = copy.deepcopy(restore)
+            else:
+                print('Your mana increased by 30 points.')
+                player.mana += 30
+
     time.sleep(1) 
     return player
