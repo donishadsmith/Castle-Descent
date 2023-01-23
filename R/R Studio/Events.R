@@ -218,8 +218,24 @@ battle_sequence <- function(castle_data,player,monster_hp,player_choice){
     win_money = castle_data$dataframe[player$castle_dataframe_row,"win_money"] 
     #Add zero to dataframe to ensure that event is not triggered
     castle_data$dataframe[player$castle_dataframe_row,"hp"] <- monster_hp <- 0
+    #Random Drop
+    random_drop <- sample(c(names(player$hidden_item_inventory),""), size = 1, prob = c(0.125,0.125,0.025,0.125,0.60))
+    if(!random_drop == ""){
+      player$hidden_item_inventory[[random_drop]] <- player$hidden_item_inventory[[random_drop]] + 1
+      #If it is not in inventory, loop through available spaces to add it too
+      if(length(which(player$observable_item_inventory[seq(2,8,2)] == random_drop)) == 0){
+        free_space <- which(player$observable_item_inventory[seq(2,8,2)] == "")
+        player$observable_item_inventory[seq(2,8,2)][free_space[1]] <- random_drop
+      }
+      prompt <- sprintf("Money: %s\n\nItem Drop: %s",win_money,random_drop)
+    }
+    else{
+      prompt <- sprintf("Money: %s\n",win_money)
+    }
     player$money = player$money + win_money
-    cat(sprintf("The monster fainted. Got %s dollars",win_money))
+    cat("The monster fainted.")
+    new_line(2)
+    cat(prompt)
     #Set monster hp to 0 in dataframe
     castle_data$dataframe[player$castle_dataframe_row,"hp"] <- 0
     if(player$monster_threshold > 0){

@@ -24,11 +24,11 @@ read_console_try_again_action <- function() {
 
 
 read_console_player_movement_action <- function() {
-  cat("w(up), a(left), s(down), d(right), inventory(i)")
+  cat("w(up), a(left), s(down), d(right), inventory(i), quit(q): ")
   while(rstudioapi::isAvailable()) {
     player_action <- tolower(rstudioapi::getConsoleEditorContext()$contents)
     
-    if(player_action %in% c("w","a","s","d","i")) {
+    if(player_action %in% c("w","a","s","d","i","q")) {
       rstudioapi::sendToConsole("",execute = F)
       return(player_action)
       }

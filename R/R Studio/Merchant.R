@@ -152,7 +152,7 @@ shop_inventory[1] <- "\U2771"
 selection_menu <- matrix(c("Buy: ","\U2770","1","\U2771"), ncol = 4)
 
 
-merchant <- merchant_class(item_costs = list("\U1F52E" = 50,"\U1F371" = 10,"\U0001f50e" = 250,"\U1F9EA" = 40),
+merchant <- merchant_class(item_costs = list("\U1F52E" = 50,"\U1F371" = 10,"\U0001f50e" = 500,"\U1F9EA" = 40),
                           shop_inventory = shop_inventory,
                           selection_menu = selection_menu
                           )

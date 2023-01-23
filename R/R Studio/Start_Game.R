@@ -9,3 +9,4 @@ for(castle_descent_file in dir()){
 #Remove variables from global environment
 rm(castle_descent_file)
 castle_descent$start_game()
+

@@ -28,7 +28,7 @@ start_game <- function(){
                         acceleration = 0,
                         previous_velocity = 0,
                         previous_game_update_time = 0,
-                        monster_threshold = round(length(which(castle_data$dataframe$z == 1 & castle_data$dataframe$object %in% c("\U1F479","\U1F9DB"))),0))
+                        monster_threshold = round(length(which(castle_data$dataframe$z == 1 & castle_data$dataframe$object %in% c("\U1F479","\U1F9DB","\U1F409"))),0))
   
   #Add player menus
   player$menus <- list("genie" = matrix(c("\U2771","Increase Attack","","Reduce Mana Cost"), ncol = 4)
@@ -62,8 +62,8 @@ start_game <- function(){
     new_line(1)
     Sys.sleep(1)
   }
-  
-  while(!(player$encountered_object=="\U2395"  | player$hp <= 0 | zombie$distance_to_player == 0)){
+  game_status <- "play"
+  while(!(player$encountered_object=="\U2395"  | player$hp <= 0 | zombie$distance_to_player == 0| game_status == "quit")){
     #If player kills a certain number of monsters, the stairs or exit is revealed
     object <- ""
     if(player$monster_threshold == 0){
@@ -87,7 +87,7 @@ start_game <- function(){
     #activated their crystal ball
     if(player$zombie_halt > 0){
       new_line(2)
-      cat(sprintf("Number of steps before zombie can move: %s left..",player$zombie_halt))
+      cat(sprintf("Number of steps before zombie can move: %s left.",player$zombie_halt))
       }
     new_line(2)
     #Get time before the game updates
@@ -95,7 +95,10 @@ start_game <- function(){
     player_action <- read_console_player_movement_action()
     if(player_action == "i"){
       player$encountered_object <- "inventory"
-      }
+    }
+    else if(player_action == "q"){
+      game_status <- "quit"
+    }
     else{
       #Get the movement coordinate which is the sum of the player coordinate and the vector in the movement dictionary
       #corresponding to the valid player action
@@ -125,7 +128,7 @@ start_game <- function(){
         player$castle_dataframe_row <- which(castle_data$dataframe$x == player$movement_coordinate[1] & castle_data$dataframe$y == player$movement_coordinate[2] & castle_data$dataframe$z == player$movement_coordinate[3])
         number <- castle_data$dataframe[player$castle_dataframe_row,"hp"]
         if(number > 0){
-          if(castle_data$dataframe[player$castle_dataframe_row,"object"] %in% c("\U1F479", "\U1F9DB")){
+          if(castle_data$dataframe[player$castle_dataframe_row,"object"] %in% c("\U1F479", "\U1F9DB","\U1F409")){
             player$encountered_object <- "monster"
           }
           else if(castle_data$dataframe[player$castle_dataframe_row,"object"] == "DS"){
@@ -137,94 +140,102 @@ start_game <- function(){
         }
       }
     }
-      
-    #Update player and zombie location if encountered object is an empty space or zombie
-    if(player$encountered_object %in% c("","\U1F9DF","\U1F6AA")){
-      #Clear current coordinate if it contains player
-      if(castle_data$castle[player$current_coordinate] == "\U1F93A"){
-        castle_data$castle[player$current_coordinate] <- ""
+    if(game_status == "play"){
+      #Update player and zombie location if encountered object is an empty space or zombie
+      if(player$encountered_object %in% c("","\U1F9DF","\U1F6AA")){
+        #Clear current coordinate if it contains player
+        if(castle_data$castle[player$current_coordinate] == "\U1F93A"){
+          castle_data$castle[player$current_coordinate] <- ""
         }
-      if(player$encountered_object %in% c("","\U1F6AA")){
-        #Add emoji
-        if(player$encountered_object == ""){
-          castle_data$castle[player$movement_coordinate] <- "\U1F93A"
-        }
-        #Update coordinate
-        player$current_coordinate <- player$movement_coordinate
-        #Get epoch time after object movement and get velocity
-        player$current_game_update_time <- as.numeric(Sys.time())
-        player$calculate_player_velocity()
-        #Zombie event
-        if(player$zombie_halt == 0){
-          event_output <- zombie$pathfinding(castle_data = castle_data,player = player)
-          castle_data <- event_output[1:3]
+        if(player$encountered_object %in% c("","\U1F6AA")){
+          #Add emoji
+          if(player$encountered_object == ""){
+            castle_data$castle[player$movement_coordinate] <- "\U1F93A"
           }
-        else{
-          player$zombie_halt <- player$zombie_halt - 1
+          #Update coordinate
+          player$current_coordinate <- player$movement_coordinate
+          #Get epoch time after object movement and get velocity
+          player$current_game_update_time <- as.numeric(Sys.time())
+          player$calculate_player_velocity()
+          #Zombie event
+          if(player$zombie_halt == 0){
+            event_output <- zombie$pathfinding(castle_data = castle_data,player = player)
+            castle_data <- event_output[1:3]
+          }
+          else{
+            player$zombie_halt <- player$zombie_halt - 1
+          }
         }
+        else if(player$encountered_object == "\U1F9DF"){
+          player$current_coordinate <- player$movement_coordinate
+          zombie$distance_to_player <- 0
         }
-      else if(player$encountered_object == "\U1F9DF"){
-        player$current_coordinate <- player$movement_coordinate
-        zombie$distance_to_player <- 0
       }
-      }
-    else{
-      if(!(player$floor == player$total_floors & player$encountered_object == "\U2395")){
-        #Look into dataframe to see what encountered object is supposed to be
-        #Switch statement for events
-        switch(player$encountered_object,
-               "\U1F9DA"= {event_output = fairy_event(castle_data = castle_data,player = player)
-               },
-               "\U1F9DE"= {event_output = genie_event(castle_data = castle_data,player = player)
-               },
-               "monster"= {
-                 #Obtain the monster unicode that needs to be displayed - Vampire or Ogre
-                 player$encountered_object = castle_data$dataframe[player$castle_dataframe_row,"object"]
-                 event_output = monster_event(castle_data = castle_data,player = player)
-               },
-               "next level" =  {
-                 if(!(castle_data$dataframe[player$castle_dataframe_row,"object"] == "\U2395")){
-                   #Get Unicode
-                   player$encountered_object = castle_data$dataframe[player$castle_dataframe_row,"object"]
-                   castle_data = player$move_to_new_floor_event(castle_data = castle_data)
-                   if(zombie$current_coordinate[3] != player$current_coordinate[3]){
-                     event_output = zombie$move_to_new_floor_event(castle_data = castle_data,player = player)
+      else{
+        if(!(player$floor == player$total_floors & player$encountered_object == "\U2395")){
+          #Look into dataframe to see what encountered object is supposed to be
+          #Switch statement for events
+          switch(player$encountered_object,
+                 "\U1F9DA"= {event_output <- fairy_event(castle_data = castle_data,player = player)
+                 },
+                 "\U1F9DE"= {event_output <- genie_event(castle_data = castle_data,player = player)
+                 },
+                 "monster"= {
+                   #Obtain the monster unicode that needs to be displayed - Vampire or Ogre
+                   player$encountered_object <- castle_data$dataframe[player$castle_dataframe_row,"object"]
+                   event_output <- monster_event(castle_data = castle_data,player = player)
+                 },
+                 "next level" =  {
+                   if(!(castle_data$dataframe[player$castle_dataframe_row,"object"] == "\U2395")){
+                     #Get Unicode
+                     player$encountered_object <- castle_data$dataframe[player$castle_dataframe_row,"object"]
+                     castle_data <- player$move_to_new_floor_event(castle_data = castle_data)
+                     if(zombie$current_coordinate[3] != player$current_coordinate[3]){
+                       event_output <- zombie$move_to_new_floor_event(castle_data = castle_data,player = player)
+                     }
+                     else{
+                       event_output <- c(castle_data,player)
+                     }
                    }
-                   else{
-                     event_output <- c(castle_data,player)
-                   }
+                 },
+                 "AS" = {
+                   event_output <- upstairs_event(castle_data = castle_data,player = player)
+                 },
+                 "inventory" = {
+                   event_output <- item_inventory(castle_data = castle_data,player = player,game_sequence = "free movement")
+                 },
+                 "\U1F9DD" = {
+                   event_output <- merchant$menu(castle_data = castle_data,player = player,game_sequence = "merchant")
                  }
-                 },
-               "AS" = {
-                 event_output = upstairs_event(castle_data = castle_data,player = player)
-                 },
-               "inventory" = {
-                 event_output = item_inventory(castle_data = castle_data,player = player,game_sequence = "free movement")
-                 },
-               "\U1F9DD" = {
-                 event_output = merchant$menu(castle_data = castle_data,player = player,game_sequence = "merchant")
-                 }
-               )
-        #Collect the outputs from each function
-        castle_data <- event_output[1:3]
-        player <- event_output[[4]]
+          )
+          #Collect the outputs from each function
+          castle_data <- event_output[1:3]
+          player <- event_output[[4]]
+        }
       }
     }
     }
   #if/else statement to continue or quit when they die
-  if(zombie$distance_to_player == 0){
-    player$hp <- 0
-    prompt <- "You were eaten by the zombie" 
-  }
-  else if(player$encountered_object=="\U2395" & player$floor == player$total_floors){
+  if(game_status != "quit"){
+    if(zombie$distance_to_player == 0){
+      player$hp <- 0
+      prompt <- "You were eaten by the zombie" 
+    }
+    else if(player$encountered_object=="\U2395" & player$floor == player$total_floors){
+      display_array(castle_data = castle_data,player = player,game_sequence = "non-battle")
+      prompt <- "You found the exit!"
+    }
     display_array(castle_data = castle_data,player = player,game_sequence = "non-battle")
-    prompt <- "You found the exit!"
+    cat(prompt)
+    new_line(2)
+    #Retry 
+    iteration <<- iteration + 1
+    read_console_try_again_action()
   }
-  display_array(castle_data = castle_data,player = player,game_sequence = "non-battle")
-  cat(prompt)
-  new_line(2)
-  #Retry 
-  iteration <<- iteration + 1
-  read_console_try_again_action()
+  else{
+    new_line(2)
+    cat("Thank you for playing Castle Descent!")
+  }
+  
 }
 

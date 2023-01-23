@@ -55,10 +55,10 @@ castle_create <- function(){
     castle[,,floor][sample(which(castle[,,floor] == "1"),round(castle_length/3,0))] <- "\U1F9DA"
     castle[,,floor][sample(which(castle[,,floor] == "1"),round(castle_length/3,0))] <- "\U1F9DE"
   }
-  #Add monsters - ogres and vampires
+  #Add monsters - ogres,vampires,dragons
   for(floor in 1:max_floors){
     for(space in which(castle[,,floor] == "1")){
-      castle[,,floor][space] <- sample(c("\U1F479","\U1F9DB"),1)
+      castle[,,floor][space] <- sample(c("\U1F479","\U1F9DB","\U1F409"),1)
     }
   }
   #Adding information for fairies to data frame
@@ -67,17 +67,20 @@ castle_create <- function(){
   #Adding information for genies to data frame
   castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows + nrow(which(castle == "\U1F9DB", arr.ind = T))),] <- NA
   castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows <- nrow(castle_dataframe)),1:4] <- data.frame(which(castle == "\U1F9DB", arr.ind = T), rep("\U1F9DB", nrow(which(castle =="\U1F9DB", arr.ind = T))))
+  castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows + nrow(which(castle == "\U1F409", arr.ind = T))),] <- NA
+  castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows <- nrow(castle_dataframe)),1:4] <- data.frame(which(castle == "\U1F409", arr.ind = T), rep("\U1F409", nrow(which(castle =="\U1F409", arr.ind = T))))
   #Adding hp for each each monster to data frame; Base hp increases for each floor
   base_hp_vector <- 10:20
   for(floor in 1:max_floors){
-    length <- nrow(castle_dataframe[castle_dataframe$z == floor & castle_dataframe$object %in% c("\U1F479","\U1F9DB"),])
-    castle_dataframe[castle_dataframe$z == floor & castle_dataframe$object %in% c("\U1F479","\U1F9DB"),"hp"] <- sample(base_hp_vector,length, replace = T)
+    length <- nrow(castle_dataframe[castle_dataframe$z == floor & castle_dataframe$object %in% c("\U1F479","\U1F9DB","\U1F409"),])
+    castle_dataframe[castle_dataframe$z == floor & castle_dataframe$object %in% c("\U1F479","\U1F9DB","\U1F409"),"hp"] <- sample(base_hp_vector,length, replace = T)
     #Monsters on each floor will receive a plus 10 hp boost
     base_hp_vector <- base_hp_vector + 20
   }
   #Win money is 1/2 times the original hp
-  castle_dataframe[castle_dataframe$object %in% c("\U1F479","\U1F9DB"),"win_money"] <- castle_dataframe[castle_dataframe$object %in% c("\U1F479","\U1F9DB"),"hp"]*0.5
-  #Adding monster coordinate information to the dataframe
+  castle_dataframe[castle_dataframe$object %in% c("\U1F479","\U1F9DB","\U1F409"),"win_money"] <- castle_dataframe[castle_dataframe$object %in% c("\U1F479","\U1F9DB","\U1F409"),"hp"]*0.5
+ 
+  #Adding fairy and genie information to dataframe
   castle_dataframe[(castle_dataframe_rows + nrow(which(castle == "\U1F9DA", arr.ind = T))),] <- NA
   castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows <- nrow(castle_dataframe)),1:5] <- data.frame(which(castle == "\U1F9DA", arr.ind = T), rep("\U1F9DA", nrow(which(castle =="\U1F9DA", arr.ind = T))),
                                                                                                                     rep(1,nrow(which(castle=="\U1F9DA", arr.ind = T)))
@@ -86,6 +89,8 @@ castle_create <- function(){
   castle_dataframe[(castle_dataframe_rows + 1):(castle_dataframe_rows <- nrow(castle_dataframe)),1:5] <- data.frame(which(castle == "\U1F9DE", arr.ind = T), rep("\U1F9DE", nrow(which(castle =="\U1F9DE", arr.ind = T))),
                                                                                                                     rep(1,nrow(which(castle=="\U1F9DE", arr.ind = T)))
   )
+
+  
   #Spawning doors at coordinates that are objects
   for(coordinate in 1:nrow(castle_dataframe)){
     x <- unlist(castle_dataframe[coordinate,1:3])
