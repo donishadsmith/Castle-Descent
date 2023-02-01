@@ -10,3 +10,4 @@ The objective is to descend to the bottom of a randomly generated castle (repres
 -[Python](https://python.org)
 
 
+[![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
