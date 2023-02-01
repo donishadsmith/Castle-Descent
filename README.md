@@ -1,11 +1,12 @@
-## Castle-Descent
+# Castle Descent 
 
-This repository for a R/Python Unicode text-based/rouguelike game that I created. This project is ongoing and new features will be added in the future when I have time. 
+This repository for a R/Python Unicode text-based/rouguelike game that I created. This project is ongoing and new features and refinements will be made in the future. 
 
-Note: Both versions are playable, I am working on refining and debugging code. The "R Studio" version uses R Studio's Application Programming Interface (API) to flush user input. The Python version uses the msvrcrt module to flush user input.
+The objective is to descend to the bottom of a randomly generated castle (represented as a 3D Array) while avoiding a zombie. To do so, you need to interact with the doors and defeat all monsters on the floor to reveal the door to the next level/exit. These doors may contain monsters, genies (which increase your attack or reduce the cost of mana for your enhanced attack, or faries (which heals you). Deafeating monsters earns you money and random item drops. Money can be used to purchase items, which may assist you through the game, from the merhcant.
 
-The objective is to descend to the bottom of a randomly generated castle (represented as a 3D Array) while avoiding a zombie. To do so, you need to interact with the doors and defeat all monsters on the floor to reveal the door to the next level/exit. These doors may contain monsters, genies (which increase your attack or reduce the cost of mana for your enhanced attack, or a fairy (which heals you). Deafeating monsters 
+##Technologies Used
 
-
+-[R Studio](https://rstudio.com) 
+-[Python](https://python.org)
 
 
