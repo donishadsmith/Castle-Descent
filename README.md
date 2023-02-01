@@ -1,4 +1,4 @@
-#Castle-Descent
+## Castle-Descent
 
 This repository for a R/Python Unicode text-based/rouguelike game that I created. This project is ongoing and new features will be added in the future when I have time. 
 
