@@ -13,4 +13,6 @@ The objective is to descend to the bottom of a randomly generated castle (repres
 
 #### Python
 
-`python3.10 Start_Game.py`
+```python
+python3.10 Start_Game.py
+```
