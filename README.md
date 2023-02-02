@@ -55,4 +55,4 @@ Additionally, player's stats such as their current health, mana, and money are d
 
 ![Screenshot (15)](https://user-images.githubusercontent.com/112973674/216421271-c0004950-99bf-46a6-aebc-ae6a22962277.png)
 
-
+Player's can access their inventory, inside and outside of battle.
