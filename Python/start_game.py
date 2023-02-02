@@ -135,8 +135,9 @@ def start_game():
                 #Get velocity and acceleration
                 #Velocity and acceleration depends on player reaction time plus the it takes for the coordinate to update
                 #This creates more interesting movement since reaction time is more variable than update time for the code
+                
                 #Small delay to prevent a divide by 0 error
-                time.sleep(0.05)
+                time.sleep(0.01)
                 player.current_game_update_time = time.time()
                 player.calculate_player_velocity()     
                 player.current_coordinate = tuple(player.movement_coordinate)
