@@ -47,3 +47,7 @@ source("game_scripts/create_environment.R")
 
 ## Gameplay
 
+As mentioned previously, the player's objective is to descent the castle while battling the monsters and avoiding the zombie. The entire game uses Unicode and arrays for visualization. 
+
+Player's can navigate throughout the grid using the `w` `a` `s` `d` keys.
+
