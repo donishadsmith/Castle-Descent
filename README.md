@@ -18,4 +18,4 @@ python3.10 start_game.py
 ```
 #### RStudio:
 
-Open `start_game.R` in R Studio and run the file. Make sure that current working directory is set to the directory that `start_game.R` is located in.
+Open `start_game.R` in *RStudio* and run the file. Make sure that current working directory is set to the directory that `start_game.R` is located in.
