@@ -9,6 +9,16 @@ The objective is to descend to the bottom of a randomly generated castle (repres
 [![RStudio Community: RStudio IDE](https://img.shields.io/endpoint?url=https%3A%2F%2Frstudio.github.io%2Frstudio-shields%2Fcategory%2Frstudio-ide.json)](https://community.rstudio.com/c/rstudio-ide)
 [![Python 3.10](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/downloads/release/python-3100/)
 
+## Requirements
+
+#### Python:
+
+The Python version only works on Windows PCs si.nce it relies on the *msvcrt* module, which is only available on windows, to flush player inputs. Additionally, the *numpy* module is needed to run this game.
+
+#### RStudio:
+
+Only RStudio is needed to run this game.
+
 ## Starting Game
 
 #### Python:
