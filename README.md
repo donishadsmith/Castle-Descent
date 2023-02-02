@@ -28,8 +28,10 @@ To do this:
 2) Go to: *Session -> Set Working Directory -> To Source File Location* (or *To File Pane Location* if the directory containing `start_game.R` is in the File Pane (bottom right).
 ![Screenshot (7)](https://user-images.githubusercontent.com/112973674/216412677-5743579c-9a5b-4417-ac3e-f200f07b6428.png)
 
-3) Highlight ```R source("game_scripts/create_environment.R")```
-
+3) Highlight:
+```R 
+source("game_scripts/create_environment.R")
+```
 4) Click *Run*.
 
 
