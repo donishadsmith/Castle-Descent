@@ -51,6 +51,8 @@ As mentioned previously, the player's objective is to descent the castle while b
 
 Player's can navigate throughout the grid using the `w` `a` `s` `d` keys. The array is wrapped so that going out of bounds make the player reappear on the opposite side of the grid. If the doors are empty, player's can move through the empty doors. While the player is restricted to four movements (up,down,left,right) the zombie can move in eight directions (up,down,left,right,diagonally). However, unlike the player, the zombie cannot move outside the grid to reappear at the opposite side nor can it move through the empty doors.
 
+Additionally, player's stats such as their current health, mana, and money are displayed at the bottom of the array.
+
 ![Screenshot (15)](https://user-images.githubusercontent.com/112973674/216421271-c0004950-99bf-46a6-aebc-ae6a22962277.png)
 
 
