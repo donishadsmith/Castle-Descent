@@ -13,6 +13,7 @@ The objective is to descend to the bottom of a randomly generated castle (repres
 
 #### Python:
 
+While in the same folder containing `start_game.py` in your Terminal, run:
 ```python
 python3.10 start_game.py
 ```
