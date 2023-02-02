@@ -13,7 +13,7 @@ The objective is to descend to the bottom of a randomly generated castle (repres
 
 #### Python:
 
-The Python version only works on Windows PCs si.nce it relies on the *msvcrt* module, which is only available on windows, to flush player inputs. Additionally, the *numpy* module is needed to run this game.
+The Python version only works on Windows PCs since it relies on the *msvcrt* module, which is only available on windows, to flush player inputs. Additionally, the *numpy* module is needed to run this game.
 
 #### RStudio:
 
