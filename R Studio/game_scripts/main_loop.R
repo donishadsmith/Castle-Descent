@@ -154,6 +154,8 @@ start_game <- function(){
           }
           #Update coordinate
           player$current_coordinate <- player$movement_coordinate
+          #Small delay to ensure no divide by 0 error.
+          Sys.sleep(0.01)
           #Get epoch time after object movement and get velocity
           player$current_game_update_time <- as.numeric(Sys.time())
           player$calculate_player_velocity()
