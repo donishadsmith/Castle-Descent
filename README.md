@@ -45,4 +45,5 @@ source("game_scripts/create_environment.R")
 ```
 4) Click *Run*.
 
+## Gameplay
 
