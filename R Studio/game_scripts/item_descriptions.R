@@ -2,8 +2,7 @@
 item_descriptions <- function(object,cost){
   if(cost == "yes"){
    cost_prompt <- sprintf("Cost: %s", cost <- merchant$item_costs[[object]])
-  }
-  else{
+  }else{
    cost_prompt <- ""
   }
   switch(object,

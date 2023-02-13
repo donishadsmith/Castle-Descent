@@ -9,8 +9,7 @@ read_console_try_again_action <- function() {
       #Needed to clear console
       rstudioapi::sendToConsole("",execute = F)
       start_game()
-      }
-    else if(player_action %in% c("no","n")){
+      } else if(player_action %in% c("no","n")){
       new_line(2)
       cat("Thank you for playing Castle Descent!")
       return(noquote(""))
@@ -42,8 +41,7 @@ read_console_player_menu_action <- function(game_sequence){
   if(game_sequence %in% c("battle","genie")){
     prompt = "a (left), d(right), select (s): "
     valid_actions = c("a","d","s")
-  }
-  else{
+  }else{
     prompt = "a (left), d(right), select(s), exit(e): "
     valid_actions = c("a","d","s","e")
   }

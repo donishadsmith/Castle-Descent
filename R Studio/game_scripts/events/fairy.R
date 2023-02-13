@@ -9,17 +9,14 @@ fairy_event <- function(castle_data,player){
   if(player$hp == 100 & player$mana == 100){
     cat("Your HP and mana are already full. Come back later.")
     #Add pause to allow player to read information
-  }
-  else{
+  }else{
     if(player$hp == 100 & player$mana < 100){
       cat("Your mana was fully restored!.")
       player$mana <- 100
-    }
-    else if(player$hp < 100 & player$mana == 100){
+    }else if(player$hp < 100 & player$mana == 100){
       cat("Your HP was fully restored!")
       player$hp <- 100
-    }
-    else{
+    }else{
       cat("Your HP and mana were fully restored!")
       player$mana <- 100
       player$hp <- 100

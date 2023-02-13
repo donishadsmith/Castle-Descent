@@ -25,9 +25,7 @@ monster_event <- function(castle_data,player){
       #Move cursor
       if(player_action %in% c("a","d")){
         player <- cursor$move_cursor(player,player_action,game_sequence = "battle")
-      }
-      #Logic for selection
-      else{
+      }else{
         player_choice <- player$menus[["battle"]][cursor$position + 1]
         #Check mana
         if(!player_choice %in% c("Attack","Run", "Inventory")){
@@ -55,9 +53,7 @@ monster_event <- function(castle_data,player){
       castle_data <- event_output[1:3]
       player <- event_output[[4]]
       monster_hp <- castle_data$dataframe[player$castle_dataframe_row,"hp"]
-    }
-    #Access inventory during battle
-    else if(player_choice == "Inventory"){
+    }else if(player_choice == "Inventory"){
       event_output <- item_inventory(castle_data = castle_data,player = player,game_sequence = "battle")
       player_action <- ""
       player <- event_output[[4]]
@@ -80,8 +76,7 @@ battle_sequence <- function(castle_data,player,monster_hp,player_choice){
                 monster_hp = monster_hp)
   if(player_choice == "Attack"){
     player$attack_power <- sample(player$attack_range,1)
-  }
-  else{
+  }else{
     player$attack_power <- sample(player$enhanced_attack_range,1)
     player$mana <- player$mana - player$mana_cost
   }
@@ -101,8 +96,7 @@ battle_sequence <- function(castle_data,player,monster_hp,player_choice){
       player$hp <- 0
       cat("You died.")
     }
-  }
-  else{
+  }else{
     #Money won is 1.5 times the monsters full hp
     win_money = castle_data$dataframe[player$castle_dataframe_row,"win_money"] 
     #Add zero to dataframe to ensure that event is not triggered
@@ -117,8 +111,7 @@ battle_sequence <- function(castle_data,player,monster_hp,player_choice){
         player$observable_item_inventory[seq(2,8,2)][free_space[1]] <- random_drop
       }
       prompt <- sprintf("Money: %s\n\nItem Drop: %s",win_money,random_drop)
-    }
-    else{
+    }else{
       prompt <- sprintf("Money: %s\n",win_money)
     }
     player$money = player$money + win_money

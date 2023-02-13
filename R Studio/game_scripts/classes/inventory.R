@@ -30,9 +30,7 @@ item_inventory <- function(castle_data,player,game_sequence){
       object <- player$observable_item_inventory[cursor$position + 1]
       #Clear current player_action
       player_action <- ""
-    }
-    #Selection
-    else if(player_action == "s"){
+    }else if(player_action == "s"){
       #Use valid item
       if(game_sequence == "free movement" | game_sequence == "battle" & object %in% healing_items){
         player <- use_item(player = player, object = object)
@@ -42,22 +40,21 @@ item_inventory <- function(castle_data,player,game_sequence){
           }
         player_action <- ""
         object <- player$observable_item_inventory[cursor$position + 1]
-        }
-      else{
-        if(!(object == "")){
-          new_line(50)
-          cat("Inventory")
-          new_line(1)
-          cat("___________________________________________")
-          new_line(2)
-          cat(player$observable_item_inventory)
-          new_line(1)
-          cat("___________________________________________")
-          new_line(2)
-          cat("Cannot use this item in battle.")
-          player_action <- ""
-          Sys.sleep(1)
-        }
+        }else{
+          if(!(object == "")){
+            new_line(50)
+            cat("Inventory")
+            new_line(1)
+            cat("___________________________________________")
+            new_line(2)
+            cat(player$observable_item_inventory)
+            new_line(1)
+            cat("___________________________________________")
+            new_line(2)
+            cat("Cannot use this item in battle.")
+            player_action <- ""
+            Sys.sleep(1)
+            }
       }
     }
     }
@@ -95,15 +92,13 @@ use_item <- function(player,object){
              cat("You are already at full health.")
              #Add back item
              player$hidden_item_inventory[[object]] <- player$hidden_item_inventory[[object]] + 1
-             }
-           else if(player$hp + 20 > 100){
-             restore <- player$hp + 20 + (100 - (player$hp + 20))
-             cat(sprintf("Your HP increased by %s points",abs(100 - player$hp)))
-             player$hp <- restore
-             }
-           else{
-             cat("Your HP increased by 20 points.")
-             player$hp <- player$hp + 20
+             }else if(player$hp + 20 > 100){
+               restore <- player$hp + 20 + (100 - (player$hp + 20))
+               cat(sprintf("Your HP increased by %s points",abs(100 - player$hp)))
+               player$hp <- restore
+             }else{
+               cat("Your HP increased by 20 points.")
+               player$hp <- player$hp + 20
              }
            },
          "\U0001f50e" = {
@@ -111,27 +106,24 @@ use_item <- function(player,object){
              cat("The door has already been revealed.")
              #Add back item
              player$hidden_item_inventory[[object]] <- player$hidden_item_inventory[[object]] + 1
-           }
-           else{
+           }else{
              player$monster_threshold <- 0
              cat("The door has been revealed.")
-           }
+             }
            },
          "\U1F9EA" = {
            if(player$mana == 100){
              cat("You mana is already maxed out.")
              #Add back item
              player$hidden_item_inventory[[object]] <- player$hidden_item_inventory[[object]] + 1
-             }
-           else if(player$mana + 30 > 100){
-             restore <- player$mana + 30 + (100 - (player$mana + 30))
-             cat(sprintf("Your mana increased by %s points",abs(100 - player$mana)))
-             player$mana <- restore
-             }
-           else{
-             cat("Your mana increased by 30 points.")
-             player$mana <- player$mana + 30
-           }
+             }else if(player$mana + 30 > 100){
+               restore <- player$mana + 30 + (100 - (player$mana + 30))
+               cat(sprintf("Your mana increased by %s points",abs(100 - player$mana)))
+               player$mana <- restore
+             }else{
+               cat("Your mana increased by 30 points.")
+               player$mana <- player$mana + 30
+               }
            }
          )
          

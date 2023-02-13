@@ -35,11 +35,10 @@ zombie_class <- setRefClass("zombie_info",
                                   if(player$changed_dimension == 1){
                                     player$current_velocity <- c(player$current_velocity,0,0)
                                     player$acceleration <- c(player$acceleration,0,0)
-                                  }
-                                  else{
+                                  }else{
                                     player$current_velocity <- c(0,player$current_velocity,0)
                                     player$acceleration <- c(0,player$acceleration,0)
-                                  }
+                                    }
                                   displacement <- player$current_velocity*dynamic_t + (player$acceleration*(dynamic_t)^2)/2
                                   predicted_player_position <- round(player$current_coordinate + displacement,0)
                                   
@@ -48,11 +47,10 @@ zombie_class <- setRefClass("zombie_info",
                                     distance_to_predicted_player_position <- c(distance_to_predicted_player_position,chebyshev_distance(possible_coordinate,predicted_player_position))
                                   }
                                   current_coordinate <<-  movement_vector[[which(distance_to_predicted_player_position == min(distance_to_predicted_player_position))[1]]]
-                                }
-                                #If player coordinate is in movement vector, zombie moves to the coordinate
-                                else{
-                                  current_coordinate <<- player$current_coordinate
-                                }
+                                  #If player coordinate is in movement vector, zombie moves to the coordinate
+                                  }else{
+                                    current_coordinate <<- player$current_coordinate
+                                    }
                                 #Erase zombie from old location and add to new location
                                 castle_data$castle[which(castle_data$castle=="\U1F9DF",arr.ind = T)] <- ""
                                 castle_data$castle[current_coordinate] <- "\U1F9DF"

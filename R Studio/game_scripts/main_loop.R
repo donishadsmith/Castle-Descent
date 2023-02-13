@@ -55,8 +55,7 @@ start_game <- function(){
     cat("You will be starting at the top of the castle!")
     new_line(2)
     Sys.sleep(1)
-  }
-  else{
+  }else{
     new_line(50)
     cat("New game.")
     new_line(1)
@@ -95,11 +94,9 @@ start_game <- function(){
     player_action <- read_console_player_movement_action()
     if(player_action == "i"){
       player$encountered_object <- "inventory"
-    }
-    else if(player_action == "q"){
+    }else if(player_action == "q"){
       game_status <- "quit"
-    }
-    else{
+    }else{
       #Get the movement coordinate which is the sum of the player coordinate and the vector in the movement dictionary
       #corresponding to the valid player action
       player$movement_coordinate <- player$current_coordinate + player$movement_dict[[player_action]]
@@ -111,9 +108,8 @@ start_game <- function(){
         if(length(bound) > 0){
           if(bound == 1){
             player$movement_coordinate[dimension] <- max - 1
-            }
-          else{
-            player$movement_coordinate[dimension] <- max %% max + 1
+            }else{
+              player$movement_coordinate[dimension] <- max %% max + 1
           }
         }
       }
@@ -130,11 +126,9 @@ start_game <- function(){
         if(number > 0){
           if(castle_data$dataframe[player$castle_dataframe_row,"object"] %in% c("\U1F479", "\U1F9DB","\U1F409")){
             player$encountered_object <- "monster"
-          }
-          else if(castle_data$dataframe[player$castle_dataframe_row,"object"] == "DS"){
+          }else if(castle_data$dataframe[player$castle_dataframe_row,"object"] == "DS"){
             player$encountered_object <- "next level"
-          }
-          else{
+          }else{
             player$encountered_object <- castle_data$dataframe[player$castle_dataframe_row, "object"]
           }
         }
@@ -163,17 +157,14 @@ start_game <- function(){
           if(player$zombie_halt == 0){
             event_output <- zombie$pathfinding(castle_data = castle_data,player = player)
             castle_data <- event_output[1:3]
-          }
-          else{
+          }else{
             player$zombie_halt <- player$zombie_halt - 1
           }
-        }
-        else if(player$encountered_object == "\U1F9DF"){
+        }else if(player$encountered_object == "\U1F9DF"){
           player$current_coordinate <- player$movement_coordinate
           zombie$distance_to_player <- 0
         }
-      }
-      else{
+      }else{
         if(!(player$floor == player$total_floors & player$encountered_object == "\U2395")){
           #Look into dataframe to see what encountered object is supposed to be
           #Switch statement for events
@@ -194,8 +185,7 @@ start_game <- function(){
                      castle_data <- player$move_to_new_floor_event(castle_data = castle_data)
                      if(zombie$current_coordinate[3] != player$current_coordinate[3]){
                        event_output <- zombie$move_to_new_floor_event(castle_data = castle_data,player = player)
-                     }
-                     else{
+                     }else{
                        event_output <- c(castle_data,player)
                      }
                    }
@@ -222,8 +212,7 @@ start_game <- function(){
     if(zombie$distance_to_player == 0){
       player$hp <- 0
       prompt <- "You were eaten by the zombie" 
-    }
-    else if(player$encountered_object=="\U2395" & player$floor == player$total_floors){
+    }else if(player$encountered_object=="\U2395" & player$floor == player$total_floors){
       display_array(castle_data = castle_data,player = player,game_sequence = "non-battle")
       prompt <- "You found the exit!"
     }
@@ -233,8 +222,7 @@ start_game <- function(){
     #Retry 
     iteration <<- iteration + 1
     read_console_try_again_action()
-  }
-  else{
+  }else{
     new_line(2)
     cat("Thank you for playing Castle Descent!")
   }

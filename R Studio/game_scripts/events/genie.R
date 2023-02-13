@@ -18,14 +18,11 @@ genie_event <- function(castle_data,player){
       #Move cursor
       if(player_action %in% c("a","d")){
         player <- cursor$move_cursor(player,player_action,game_sequence = "genie")
-      }
-      #Logic for selection
-      else{
+      }else{
         player_choice <- player$menus[["genie"]][cursor$position + 1]
       }
     }
-  }
-  else{
+  }else{
     player_choice = "Increase Attack"
   }
   display_array(castle_data = castle_data,player = player,game_sequence = "non-battle")
@@ -38,8 +35,7 @@ genie_event <- function(castle_data,player){
     cat(sprintf("New Attack range: %s:%s",min(player$attack_range),max(player$attack_range)))
     new_line(2)
     cat(sprintf("New Enchanced Attack range: %s:%s",min(player$enhanced_attack_range),max(player$enhanced_attack_range)))
-  }
-  else if(player_choice == "Reduce Mana Cost"){
+  }else if(player_choice == "Reduce Mana Cost"){
     decrease_mana_cost <- sample(1:5,1)
     player$mana_cost <- player$mana_cost - decrease_mana_cost
     if(player$mana_cost < 1){

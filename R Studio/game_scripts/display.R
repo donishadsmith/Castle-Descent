@@ -15,8 +15,7 @@ display_array <- function(castle_data,player,floor,total_floors,mana,hp,money,ga
   if(game_sequence %in% c("non-battle", "next level")){
     #Display Health information and money
     cat(sprintf("HP: %s %s Mana: %s %s %s: %s",paste0(hp,"%"),"|",paste0(mana,"%"), "|",money_unicode <- "\U1F4B0", money))
-  }
-  else{
+  }else{
     cat(sprintf("HP: %s %s Mana: %s %s Monster HP: %s",paste0(hp,"%"),"|",paste0(mana,"%")
                 ,"|",monster_hp))
   }

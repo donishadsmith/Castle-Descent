@@ -53,8 +53,7 @@ player_class <-  setRefClass("player_info",
                                                money = money)
                                  if(monster_threshold > 0){
                                    cat("You must defeat all monsters on this floor to progress.")
-                                 }
-                                 else{
+                                 }else{
                                    cat(sprintf("You can now advance to floor %s !", floor + 1))
                                    #Erase player
                                    castle_data$castle[current_coordinate] <- ""
@@ -64,7 +63,7 @@ player_class <-  setRefClass("player_info",
                                    monster_threshold <<- round(length(which(castle_data$dataframe["z"] == floor & castle_data$dataframe["object"]=="\U1F479")),0)
                                    current_coordinate[3] <<- floor
                                    castle_data$castle[current_coordinate] <- "\U1F93A"
-                                 }
+                                  }
                                  
                                  
                                  Sys.sleep(1)

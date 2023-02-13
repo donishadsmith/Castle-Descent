@@ -46,10 +46,9 @@ merchant_class = setRefClass("merchant", fields = list(item_costs = "list",
                                    if(player_action == "s"){
                                      if(player$money > item_costs[[object]]){
                                        player <- add_item(player, object)
-                                     }
-                                     else{
+                                     }else{
                                        player_action <- ""
-                                     }
+                                       }
                                      
                                    }
                                    #Reset mouse position
@@ -111,23 +110,19 @@ merchant_class = setRefClass("merchant", fields = list(item_costs = "list",
                                      if(player_action == "a"){
                                        if(selection_menu[3] == "1"){
                                          selection_menu[3] <<- as.character(max_buy)
-                                       }
-                                       else{
+                                       }else{
                                          selection_menu[3] <<- as.character(as.numeric(selection_menu[3]) - 1)
                                     
-                                       }
-                                     }
-                                     else if(player_action == "d"){
+                                        }
+                                     }else if(player_action == "d"){
                                          if(selection_menu[3] == as.character(max_buy)){
                                            print(max_buy)
-                                          selection_menu[3] <<- "1"                                         }
-                                       else{
+                                          selection_menu[3] <<- "1"                                         
+                                          }else{
                                             selection_menu[3] <<- as.character(as.numeric(selection_menu[3]) + 1)
                                            }
                                      }
-                                   }
-                                   #Add object to inventory
-                                   else if(player_action == "s"){
+                                   }else if(player_action == "s"){
                                      player$hidden_item_inventory[[object]] <- player$hidden_item_inventory[[object]] + as.numeric(selection_menu[3])
                                      #If it is not in inventory, loop through available spaces to add it too
                                      if(length(which(player$observable_item_inventory[seq(2,8,2)] == object)) == 0){
@@ -138,7 +133,7 @@ merchant_class = setRefClass("merchant", fields = list(item_costs = "list",
                                      player$money <- player$money - (as.numeric(selection_menu[3])*item_costs[[object]])
                                      #Put selection menu back to 1
                                      selection_menu[3] <<- "1"
-                                   }
+                                     }
                                    }
                                  add_item_output <- c(player,player_action)
                                  return(player)
