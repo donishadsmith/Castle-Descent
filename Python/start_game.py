@@ -1,23 +1,25 @@
-import msvcrt,sys,os,os.path as op, numpy as np
+import msvcrt,sys,os,time,os.path as op, numpy as np, glob 
+
+#Get directory of file
 work_dir = os.path.dirname(os.path.abspath(__file__))
+#Add directories to system path
 sys.path.append(op.join(work_dir,'game_scripts'))
 sys.path.append(op.join(work_dir,'game_scripts','classes'))
 sys.path.append(op.join(work_dir,'game_scripts','events'))
-from castle_create import *
-#Get player and zombie classes
-from player import * 
-from zombie import *
-#Get all the game events
-from monster import * 
-from fairy import * 
-from upstairs import * 
-from genie import * 
-#Get functions new_line(num) to add new lines and display_array() to print the game screen
-from display import *
-#Player and zombie controllers. Player can move one unit in four directions, zombie can move 1 unit in 8 directions
+
+#Get names of files
+module_names = [op.basename(file).split('.')[0] for dir_path in [op.join(work_dir,'game_scripts'),
+                              op.join(work_dir,'game_scripts','events'),
+                              op.join(work_dir,'game_scripts','classes')] for file in glob.glob(op.join(dir_path, '*.py' ))]
+
+# Put callable objects from modules in globals
+for module_name in module_names:
+    module = __import__(module_name)
+    functions = [object for object in dir(module) if callable(getattr(module,object)) if object not in globals()]
+    print(functions)
+    globals().update({name: getattr(module, name) for name in functions})
+
 from controllers import *
-from inventory import inventory
-from merchant import merchant
 #Used to determine the intro the player recieves depending on how many times the game is repeated
 iteration = 0
 #While loop of actual game
