@@ -16,7 +16,6 @@ module_names = [op.basename(file).split('.')[0] for dir_path in [op.join(work_di
 for module_name in module_names:
     module = __import__(module_name)
     functions = [object for object in dir(module) if callable(getattr(module,object)) if object not in globals()]
-    print(functions)
     globals().update({name: getattr(module, name) for name in functions})
 
 from controllers import *
