@@ -1,4 +1,4 @@
-import msvcrt,sys,os,os.path as op
+import msvcrt,sys,os,os.path as op, numpy as np
 work_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(op.join(work_dir,'game_scripts'))
 sys.path.append(op.join(work_dir,'game_scripts','classes'))
