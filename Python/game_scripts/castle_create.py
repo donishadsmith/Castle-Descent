@@ -73,3 +73,6 @@ def castle_create():
     for key in castle_info:
         castle[key] = u'\U0001f6aa'
     return castle,castle_info
+
+if __name__ == '__main__':
+    print("You must run 'python3 start_game.py' to play Castle Descent.")

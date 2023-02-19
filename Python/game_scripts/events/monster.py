@@ -95,4 +95,6 @@ def battle_sequence(castle, player, monster_hp, castle_info, player_choice):
     
     time.sleep(1.5)
     return player, monster_hp
-    
+
+if __name__ == '__main__':
+    print("You must run 'python3 start_game.py' to play Castle Descent.")

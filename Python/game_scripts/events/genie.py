@@ -59,3 +59,6 @@ def genie_event(castle, player, castle_info):
     player.menus['genie'][0] = u'\u2771' 
     time.sleep(1)
     return castle, player, castle_info
+
+if __name__ == '__main__':
+    print("You must run 'python3 start_game.py' to play Castle Descent.")

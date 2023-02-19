@@ -109,3 +109,6 @@ merchant.shop_inventory[list(range(1,8,2))] = [u'\U0001F52E',u'\U0001F371',
 u'\U0001F50E',u'\U0001F9EA']
 merchant.shop_inventory[0] = u'\u2771'
 merchant.selection_menu[:] = ['Buy: ',u'\u2770',1,u'\u2771']
+
+if __name__ == '__main__':
+    print("You must run 'python3 start_game.py' to play Castle Descent.")

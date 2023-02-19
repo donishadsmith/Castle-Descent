@@ -44,3 +44,6 @@ def item_description(object, cost):
                 print(prompt)
             case _:
                 print('')
+
+if __name__ == '__main__':
+    print("You must run 'python3 start_game.py' to play Castle Descent.")

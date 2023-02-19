@@ -103,3 +103,6 @@ def use_item(player, object):
 
     time.sleep(1) 
     return player
+
+if __name__ == '__main__':
+    print("You must run 'python3 start_game.py' to play Castle Descent.")

@@ -22,3 +22,6 @@ def display_array(castle,game_sequence,player = None,monster_hp = None,hp = None
     else:
         print(f'HP: {hp}% | Mana: {mana}% | \U0001F4B0: {money} | Monster HP: {monster_hp}')
     new_line(1)
+
+if __name__ == '__main__':
+    print("You must run 'python3 start_game.py' to play Castle Descent.")

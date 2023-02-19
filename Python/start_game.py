@@ -19,6 +19,7 @@ for module_name in module_names:
     globals().update({name: getattr(module, name) for name in functions})
 
 from controllers import *
+
 #Used to determine the intro the player recieves depending on how many times the game is repeated
 iteration = 0
 #While loop of actual game
@@ -211,4 +212,6 @@ def start_game():
     else:
         new_line(1)
         print('Thank you for playing Castle Descent!')
-start_game()   
+
+if __name__ == '__main__':
+    start_game()   

@@ -53,4 +53,5 @@ class zombie_class:
          self.current_coordinate = list(zip(*np.where(castle== u'\U0001F9DF')))[0]
          return castle
 
-   
+if __name__ == '__main__':
+    print("You must run 'python3 start_game.py' to play Castle Descent.") 

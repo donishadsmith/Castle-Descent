@@ -39,3 +39,5 @@ cursor = menu_cursor_class(position = 0,
                                 cursor_movement_dict = {'a':-2,
                                                         'd': 2})
 
+if __name__ == '__main__':
+    print("You must run 'python3 start_game.py' to play Castle Descent.")

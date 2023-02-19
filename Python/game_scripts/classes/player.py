@@ -99,3 +99,6 @@ class player_class:
         if len(current_items) > 0:
             #Is numpy array, so support [[]]
             self.observable_item_inventory[list(range(1,len(current_items)*2,2))] = copy.deepcopy(current_items)
+
+if __name__ == '__main__':
+    print("You must run 'python3 start_game.py' to play Castle Descent.")

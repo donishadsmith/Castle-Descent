@@ -18,3 +18,6 @@ player_controller.update({
     'i': 'inventory',
     'q': 'quit'
 })
+
+if __name__ == '__main__':
+    print("You must run 'python3 start_game.py' to play Castle Descent.")

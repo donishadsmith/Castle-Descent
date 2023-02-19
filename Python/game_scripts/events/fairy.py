@@ -26,4 +26,6 @@ def fairy_event(castle, player, castle_info):
     #Adding back door
     castle[player.movement_coordinate] = u'\U0001f6aa'
     return castle, player, castle_info
-    
+
+if __name__ == '__main__':
+    print("You must run 'python3 start_game.py' to play Castle Descent.")   
