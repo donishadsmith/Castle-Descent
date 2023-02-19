@@ -29,7 +29,7 @@ zombie_class <- setRefClass("zombie_info",
                                   logic_vector <- c(logic_vector,possible_coordinate == player$current_coordinate)
                                 }
                                 #If player coordinate isn't in movement vector
-                                if(!(T %in% logic_vector[1] & T %in% logic_vector[2] & T %in% logic_vector[3])){
+                                if(!(T %in% all(logic_vector))){
                                   #If it is within a certain range it starts to predict
                                   dynamic_t <- chebyshev_distance(current_coordinate,player$current_coordinate)/player$max_velocity
                                   if(player$changed_dimension == 1){
