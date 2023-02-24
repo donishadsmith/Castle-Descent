@@ -17,7 +17,7 @@ The Python version only works on Windows PCs since it relies on the *msvcrt* mod
 
 #### RStudio:
 
-Only RStudio is needed to run this game.
+Only RStudio and the *rstudioapi* package (for player input) is needed to run this game.
 
 ## Starting Game
 
