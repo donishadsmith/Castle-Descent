@@ -53,6 +53,16 @@ Player's can navigate throughout the grid using the `w` `a` `s` `d` keys. The ar
 
 Additionally, player's stats such as their current health, mana, and money are displayed at the bottom of the array.
 
-![Screenshot (15)](https://user-images.githubusercontent.com/112973674/216421271-c0004950-99bf-46a6-aebc-ae6a22962277.png)
+![Screenshot 2023-03-29 131315](https://user-images.githubusercontent.com/112973674/232951810-b99fda6f-8a2a-4799-81ee-abbc9c3fb4eb.png)
 
-Player's can access their inventory, inside and outside of battle.
+Player's have access to a merchant shop
+
+![Screenshot 2023-03-29 131338](https://user-images.githubusercontent.com/112973674/232951879-da6dee34-49aa-4724-83e6-0fc20b733967.png)
+
+And the ability to fight monsters for money and items
+
+![Screenshot 2023-03-29 132157](https://user-images.githubusercontent.com/112973674/232952120-a4e15a95-f680-4b2f-ae2e-e31c5446a3db.png)
+
+And the ability to encounter genies for increased attack points
+
+![Screenshot 2023-03-29 132320](https://user-images.githubusercontent.com/112973674/232952208-948873a4-7a48-4451-84b4-3b563827dbb6.png)
