@@ -1,5 +1,7 @@
 import msvcrt,sys,os,time,os.path as op, numpy as np, glob 
 
+if "win" not in sys.platform:
+    raise SystemError("Castle Descent only runs on Windows platforms.")
 #Get directory of file
 work_dir = os.path.dirname(os.path.abspath(__file__))
 #Add directories to system path
