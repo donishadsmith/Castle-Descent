@@ -59,7 +59,6 @@ def castle_create():
             hp = random.sample(base_hp_vector,1)[0]
             object_info.append([floor,monster_coordinate[0],monster_coordinate[1],monster_object,hp,hp*0.5])
         base_hp_vector = [num + 20 for num in base_hp_vector]
-
     #Put information in dictionary
     #Coordinates will be the keys and the unicode and and number will be the values
     #Values in a list to ensure that these values can be changes when they need to be

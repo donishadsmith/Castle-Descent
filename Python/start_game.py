@@ -20,59 +20,19 @@ for module_name in module_names:
     functions = [object for object in dir(module) if callable(getattr(module,object)) if object not in globals()]
     globals().update({name: getattr(module, name) for name in functions})
 
+print(globals())
+
 from controllers import *
 
 #Used to determine the intro the player recieves depending on how many times the game is repeated
 iteration = 0
 #While loop of actual game
 def start_game():
-    global iteration
     #Get outputs from castle_create() function
     castle,castle_info = castle_create()
-    #Add values to player and zombie attributes
-    player = player_class(hp = 100,
-                          mana = 100,
-                          money = 0,
-                          hidden_item_inventory = dict({
-                              u'\U0001F52E': 0,
-                              u'\U0001F371': 0,
-                              u'\U0001F50E': 0,
-                              u'\U0001F9EA': 0,
-                          }),
-                          mana_cost = 20,
-                          observable_item_inventory = np.array(np.zeros(shape = 8),dtype = 'U1'),
-                          menus = {'battle': np.array(np.zeros(shape = 8),dtype = 'object'),
-                                    'genie' : np.array(np.zeros(shape = 4),dtype = 'object')},
-                          zombie_halt = 0,
-                          attack_range = [num for num in range(5,11)],
-                          enhanced_attack_range = [num for num in range(20,25)],
-                          floor = 0, 
-                          controller = player_controller,
-                          current_coordinate = list(zip(*np.where(castle == '\U0001F93A')))[0],
-                          total_floors = len(castle),
-                          #For velocity and acceleration, there is code in Classes.py
-                          #to get the correct dimension
-                          max_velocity = 0,
-                          previous_velocity = 0,
-                          previous_game_update_time = 0,
-                          acceleration = 0,
-                          total_monsters =  [floor[0] for floor in [(key[0],object[0]) for key,object in castle_info.items() if object[0] in [u'\U0001f479',u'\U0001F9DB',u'\U0001F409']]])
-    #Add cursor to observable inventory and menus
-    player.observable_item_inventory[:] = ''
-    player.observable_item_inventory[0] = u'\u2771' 
-    for menu in player.menus.keys():
-        player.menus[menu][:] = ''
-        player.menus[menu][0] = u'\u2771' 
-    #Add words to player menus
-    player.menus['battle'][list(range(1,len(player.menus['battle']),2))] = ['Attack', f'Enchanced Attack({player.mana_cost} mana)', 'Inventory', 'Run']
-    player.menus['genie'][list(range(1,len(player.menus['genie']),2))] = ['Increase Attack', 'Reduce Mana Cost']
-    #Calculate the number of monsters needed to be defeated
-    player.monster_threshold = int(len([floor for floor in player.total_monsters if floor == player.floor])*0.60)
-    #Get zombie coordinate
-    zombie = zombie_class(current_coordinate = list(zip(*np.where(castle == u'\U0001F9DF')))[0],
-                        controller = zombie_movement)
-    #Calculate initial distance between zombie and player
-    zombie.distance_to_player = zombie.chebyshev_distance(zombie.current_coordinate, player.current_coordinate)
+    #Generate player, zombie and merchant
+    player, zombie, merchant = generate_objects(player_class = player_class, zombie_class = zombie_class, merchant_class = merchant_class,
+                                                castle = castle, castle_info = castle_info, player_controller = player_controller, zombie_movement = zombie_movement )
     #Introduction changes depending on whether or not this is the first iteration of the session
     if iteration == 0:
         print('Welcome to Castle Descent!')
