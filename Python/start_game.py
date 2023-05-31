@@ -20,8 +20,6 @@ for module_name in module_names:
     functions = [object for object in dir(module) if callable(getattr(module,object)) if object not in globals()]
     globals().update({name: getattr(module, name) for name in functions})
 
-print(globals())
-
 from controllers import *
 
 #Used to determine the intro the player recieves depending on how many times the game is repeated
