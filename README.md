@@ -71,7 +71,7 @@ Battle monsters to earn gold and random item drops.
 Gold earned from battles can be used to purchase items from the merchant shop.
 
 <img src="https://user-images.githubusercontent.com/112973674/232951879-da6dee34-49aa-4724-83e6-0fc20b733967.png" width="600" alt="Merchant">
-
+render_grid(screen, "door", coord, cell_coord)
 #### Special Encounters
 While some doors may contain monsters and the exit to the next floor, others may contain:
 
